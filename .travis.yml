@@ -7,4 +7,4 @@ before_script:
     - yarn
 
 after_success:
-    - npm run cover
+    - npm run coveralls
