@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec test/**/*.spec.js",
-    "cover": "istanbul cover _mocha --reporter spec test/**/*.spec.js",
+    "cover": "istanbul cover _mocha -- -R spec test/**/*.spec.js",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
@@ -30,6 +30,7 @@
   "dependencies": {
     "chai": "^3.5.0",
     "coveralls": "^2.11.15",
+    "eslint": "^3.11.0",
     "express": "^4.14.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",

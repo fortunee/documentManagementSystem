@@ -1,9 +1,7 @@
 const expect = require('chai').expect;
 
-describe('Array', function() {
-  describe('#indexOf()', function() {
-    it('should return -1 when the value is not present', function() {
-      
+describe('User', () => {
+    it('validates that a new user created is unique', () =>  {
+        
     });
-  });
 });
