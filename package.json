@@ -4,7 +4,9 @@
   "description": "A system that manages documents, users and user roles.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/.bin/mocha --reporter spec test/**/*.spec.js",
+    "cover": "istanbul cover _mocha --reporter spec test/**/*.spec.js",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -27,7 +29,10 @@
   },
   "dependencies": {
     "chai": "^3.5.0",
+    "coveralls": "^2.11.15",
     "express": "^4.14.0",
-    "mocha": "^3.2.0"
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "mocha-lcov-reporter": "^1.2.0"
   }
 }
