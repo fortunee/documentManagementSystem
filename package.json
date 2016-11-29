@@ -38,6 +38,7 @@
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "coveralls": "^2.11.15",
+    "eslint": "^3.11.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.1.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
