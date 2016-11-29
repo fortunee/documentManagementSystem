@@ -28,4 +28,4 @@ app.listen(port);
 console.log(`Hey you can find me @ => http://localhost:${port}`);
 
 // expose the server to supertest
-// export default app;
+export default app;
