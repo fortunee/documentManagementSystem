@@ -1,15 +1,25 @@
-// app modules
+/**
+ * app modules
+ */
 import express from 'express';
 import bodyParser from 'body-parser';
 
+/**
+ * Instantiate express and grab the router
+ */
 const app = express();
 const router = express.Router();
 
-// configure app to use the bodyParser
+/**
+ * configure app to use the bodyParser, 
+ * in order to enhance our POST request
+ */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// set the app port
+/**
+ * Configure default port
+ */
 const port = process.env.PORT || 8080;
 
 
@@ -19,7 +29,7 @@ router.get('/', (req, res) => {
 });
 
 // Register routes
-app.use('/', router);
+app.use('/api', router);
 
 // start the server
 app.listen(port);
