@@ -6,6 +6,10 @@ script: npm test
 before_script: 
     - yarn
 
+addons:
+  code_climate:
+    repo_token: <token>
+
 after_success:
     - npm run coveralls
     - node node_modules/codeclimate-test-reporter/bin/codeclimate < coverage/lcov.info
