@@ -1,11 +1,8 @@
 // app modules
 import express from 'express';
-
-
-const app = express();
-
 import bodyParser from 'body-parser';
 
+const app = express();
 const router = express.Router();
 
 // configure app to use the bodyParser
@@ -28,7 +25,7 @@ app.use('/', router);
 app.listen(port);
 
 // eslint-disable-next-line
-console.log(`Hey come on! find me here => localhost:${port}`);
+console.log(`Hey you can find me @ => http://localhost:${port}`);
 
 // expose the server to supertest
 // export default app;
