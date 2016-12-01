@@ -52,3 +52,24 @@ describe('users/:username route with a username param', () => {
       .expect(200, done);
   });
 });
+
+
+/**
+ * Test suite ensures that the users login route returns an appropriate
+ * response on any request
+ */
+describe('Users login route', () => {
+  it('Should return a response on a post request', (done) => {
+    request.post('/api/users/login').expect(200, done);
+  });
+});
+
+/**
+ * Test suite ensures that the users logout route returns an appropriate
+ * response on any request
+ */
+describe('Users logout route', () => {
+  it('Should return a response on a post request', (done) => {
+    request.post('/api/users/logout').expect(200, done);
+  });
+});
