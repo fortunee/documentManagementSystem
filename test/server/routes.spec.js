@@ -11,13 +11,19 @@ const request = supertest.agent(app);
 const expect = chai.expect;
 
 /**
- * Ensure the freaking api route loads properly
+ * Ensure the freaking /users route loads properly
  */
-describe('GET /api', () => {
-  it('Should return a 200 ok with a JSON', (done) => {
+describe('Users Route /api/users', () => {
+  it('Should return a 200 ok on get request', (done) => {
     request
-       .get('/api')
-       .set('Accept', 'application/json')
-       .expect(200, done);
+      .get('/api/users')
+      .set('Accept', 'application/json')
+      .expect(200, done);
+  });
+
+  it('Should return a 200 ok response on a post request', (done) => {
+    request
+      .post('/api/users')
+      .expect(200, done);
   });
 });
