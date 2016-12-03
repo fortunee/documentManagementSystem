@@ -87,3 +87,32 @@ describe('Documents route', () => {
     request.post('/api/documents').expect(200, done);
   });
 });
+
+/**
+ * Ensure the documents route returns a response when a param is passed
+ * to the route.
+ */
+describe('Documents route with param', () => {
+  it('Should return a response a get request', (done) => {
+    request.get('/api/documents/01').expect(200, done);
+  });
+
+  it('Should return a response on put request', (done) => {
+    request.put('/api/documents/02').expect(200, done);
+  });
+
+  it('Shoule return a response on a delete request', (done) => {
+    request.delete('/api/documents/02').expect(200, done);
+  });
+});
+
+
+/**
+ * Ensure that route for getting all documents belonging to
+ * a specific user returns a response
+ */
+describe('Specific User documents', () => {
+  it('Should return a response on a get request', (done) => {
+    request.get('/api/users/fortune/documents').expect(200, done);
+  });
+});
