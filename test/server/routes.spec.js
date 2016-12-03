@@ -73,3 +73,17 @@ describe('Users logout route', () => {
     request.post('/api/users/logout').expect(200, done);
   });
 });
+
+
+/**
+ * Ensures that documents route returns a response
+ */
+describe('Documents route', () => {
+  it('Should return a response on a get request', (done) => {
+    request.get('/api/documents').expect(200, done);
+  });
+
+  it('Should return a response on post request', (done) => {
+    request.post('/api/documents').expect(200, done);
+  });
+});
