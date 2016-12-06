@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
 
-const sequelize = new Sequelize(process.env.database,
+const connection = new Sequelize(process.env.database,
   process.env.username, process.env.password, {
     host: 'localhost',
     dialect: 'postgres',
@@ -20,7 +20,7 @@ fs
   .readdirSync(__dirname)
   .filter(file => (file.indexOf('.') !== 0) && (file !== 'config.js'))
   .forEach((file) => {
-    const model = sequelize.import(path.join(__dirname, file));
+    const model = connection.import(path.join(__dirname, file));
     db[model.name] = model;
   });
 
@@ -30,7 +30,7 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-db.sequelize = sequelize;
+db.connection = connection;
 db.Sequelize = Sequelize;
 
 
