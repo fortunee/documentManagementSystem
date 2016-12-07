@@ -3,6 +3,7 @@
  */
 import express from 'express';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv/config';
 import morgan from 'morgan';
 import routes from './app/routes/index';
 
