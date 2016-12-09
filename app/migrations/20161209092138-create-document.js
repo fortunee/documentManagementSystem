@@ -11,12 +11,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       content: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
-      ownerId: {
+      OwnerId: {
         type: Sequelize.INTEGER
       },
-      typeId: {
+      TypeId: {
         type: Sequelize.INTEGER
       },
       access: {
