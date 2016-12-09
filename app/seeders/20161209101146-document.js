@@ -1,4 +1,4 @@
-import faker from 'faker';
+const faker = require('faker');
 
 module.exports = {
   up(queryInterface) {
