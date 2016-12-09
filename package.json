@@ -25,9 +25,7 @@
     "url": "https://github.com/andela-efortune/documentManagementSystem/issues"
   },
   "homepage": "https://github.com/andela-efortune/documentManagementSystem#readme",
-  "devDependencies": {
-
-  },
+  "devDependencies": {},
   "dependencies": {
     "babel": "^6.5.2",
     "babel-cli": "^6.18.0",
@@ -35,6 +33,7 @@
     "babel-istanbul": "^0.11.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-2": "^6.18.0",
+    "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "codeclimate-test-reporter": "^0.4.0",
