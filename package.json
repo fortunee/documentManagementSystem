@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/andela-efortune/documentManagementSystem#readme",
   "devDependencies": {
-    "sequelize": "^3.27.0"
+
   },
   "dependencies": {
     "babel": "^6.5.2",
@@ -51,6 +51,7 @@
     "morgan": "^1.7.0",
     "pg": "^6.1.0",
     "pg-hstore": "^2.3.2",
+    "sequelize": "^3.27.0",
     "supertest": "^2.0.1"
   }
 }
