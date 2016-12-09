@@ -1,12 +1,5 @@
 language: node_js
 
-before_install:
-  # To enable Yarn
-  - sudo apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
-  - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-  - sudo apt-get update -qq
-  - sudo apt-get install -y -qq yarn
-  
 node_js:
   - "6"
 script: npm test
@@ -15,7 +8,7 @@ services:
   - postgresql
 
 before_script:
-  - yarn
+  - npm install
   - dropdb --if-exists docmanapi_test && createdb docmanapi_test
   - npm run test_db_migrate
 
