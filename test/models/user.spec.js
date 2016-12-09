@@ -21,10 +21,10 @@ const roleParams = helper.role;
 
 
 /**
- * Field attributes that Should be unique and not empty
+ * Field attributes that Should be unique and are required
  */
-const notNullAttrs = ['firstName', 'lastName', 'email', 'password', 'RoleId'];
-const uniqueAttrs = ['username', 'email'];
+const requiredFields = ['firstName', 'lastName', 'email', 'password', 'RoleId'];
+const uniqueFields = ['username', 'email'];
 
 let user;
 describe('User model', () => {
@@ -62,13 +62,61 @@ describe('User model', () => {
           expect(newUser.password).to.not.equal(userParams.password)));
   });
 
-  describe('Update user', () => {
-    it('Should hash update password', () =>
+  describe('Update User', () => {
+    it('Should hash updated password', () =>
      user.save().then(newUser =>
        newUser.update({ password: 'newpassword' })
          .then((updatedUser) => {
            expect(updatedUser.password).to.not.equal('newpassword');
          })
     ));
+  });
+
+  describe('Update Validations', () => {
+    describe('Required Fields', () => {
+      requiredFields.forEach((field) => {
+        it(`fails without ${field}`, () => {
+          user[field] = null;
+
+          return user.save()
+            .then(newUser => expect(newUser).to.not.exist)
+            .catch(err =>
+              expect(/notNull/.test(err.message)).to.be.true);
+        });
+      });
+    });
+
+    describe('UNIQUE attributes', () => {
+      uniqueFields.forEach((attr) => {
+        it(`fails for non unique ${attr}`, () =>
+          user.save().then((newUser) => {
+            const user2 = db.User.build(userParams);
+            user2.RoleId = newUser.RoleId;
+
+            return user2.save()
+              .then(newUser2 => expect(newUser2).to.not.exist)
+              .catch(err =>
+                expect(/SequelizeUniqueConstraintError/.test(err.name)).to.be.true);
+          }));
+      });
+    });
+
+    it('fails for invalid email', () => {
+      user.email = 'invalid email';
+      return user.save()
+        .then(newUser => expect(newUser).to.not.exist)
+        .catch(err =>
+          expect(/isEmail failed/.test(err.message)).to.be.true);
+    });
+  });
+
+  describe('user.validPassword', () => {
+    it('valid for correct password', () =>
+      user.save().then(newUser =>
+        expect(newUser.validPassword(userParams.password)).to.be.true));
+
+    it('invalid for incorrect password', () =>
+      user.save().then(newUser =>
+        expect(newUser.validPassword('invalid password')).to.be.false));
   });
 });
