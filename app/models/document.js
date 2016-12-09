@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         isIn: [['private', 'public', 'role']]
       }
     },
+    typeId: DataTypes.INTEGER,
   }, {
     classMethods: {
       associate: (models) => {
