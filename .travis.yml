@@ -10,6 +10,7 @@ services:
   - postgresql
 
 before_script:
+  - yarn global add sequelize
   - yarn install
   - dropdb --if-exists docmanapi_test && createdb docmanapi_test
   - npm run test_db_migrate
