@@ -21,13 +21,26 @@ const roleParams = helper.role;
 
 
 /**
- * Field attributes that Should be unique and are required
+ * Field attributes that Should be unique and required
  */
 const requiredFields = ['firstName', 'lastName', 'email', 'password', 'RoleId'];
 const uniqueFields = ['username', 'email'];
 
+
+/**
+ * Initialize a user for test
+ */
 let user;
+
+
+/**
+ * Test suite that for the user model
+ */
 describe('User model', () => {
+  /**
+   * Build and populate the user and role role tables
+   * beforeEach test runs.
+   */
   beforeEach(() =>
     db.Role.create(roleParams)
       .then((role) => {
@@ -38,8 +51,13 @@ describe('User model', () => {
   // clear database after a test done
   afterEach(() => db.User.sequelize.sync({ force: true }));
 
+
+  /**
+   * Test suite to ensure a User is created alongside it's
+   * attributes.
+   */
   describe('Create user', () => {
-    it('Should create a User instance', () => expect(user).to.exist);
+    it('Should create a User', () => expect(user).to.exist);
 
     it('Should have both first and last name', () => {
       expect(user.firstName).to.equal(userParams.firstName);
@@ -59,64 +77,84 @@ describe('User model', () => {
 
     it('Should create a new user and hash the password', () =>
       user.save().then(newUser =>
-          expect(newUser.password).to.not.equal(userParams.password)));
+          expect(newUser.password).not.to.equal(userParams.password)));
   });
 
-  describe('Update User', () => {
+
+  /**
+   * Test suite to ensure that an updated password is hashed
+   */
+  describe('Update User password', () => {
     it('Should hash updated password', () =>
      user.save().then(newUser =>
-       newUser.update({ password: 'newpassword' })
+       newUser.update({ password: 'updatepass' })
          .then((updatedUser) => {
-           expect(updatedUser.password).to.not.equal('newpassword');
+           expect(updatedUser.password).not.to.equal('updatepass');
          })
     ));
   });
 
+
+  /**
+   * Test suite to ensure that validations on required
+   * fields are checked and is working properly
+   */
   describe('Update Validations', () => {
     describe('Required Fields', () => {
       requiredFields.forEach((field) => {
-        it(`fails without ${field}`, () => {
+        it(`Should fail without ${field} field`, () => {
           user[field] = null;
 
           return user.save()
-            .then(newUser => expect(newUser).to.not.exist)
-            .catch(err =>
-              expect(/notNull/.test(err.message)).to.be.true);
+            .then(newUser => expect(newUser).not.to.exist)
+            .catch(error =>
+              expect(/notNull/.test(error.message)).to.be.true);
         });
       });
     });
 
-    describe('UNIQUE attributes', () => {
-      uniqueFields.forEach((attr) => {
-        it(`fails for non unique ${attr}`, () =>
+
+    /**
+     * Test suite to ensure that validations are checked on unique
+     * fields.
+     */
+    describe('Unique Fields', () => {
+      uniqueFields.forEach((field) => {
+        it(`Should fail for non unique ${field} field`, () =>
           user.save().then((newUser) => {
             const user2 = db.User.build(userParams);
             user2.RoleId = newUser.RoleId;
 
             return user2.save()
-              .then(newUser2 => expect(newUser2).to.not.exist)
-              .catch(err =>
-                expect(/SequelizeUniqueConstraintError/.test(err.name)).to.be.true);
+              .then(newUser2 => expect(newUser2).not.to.exist)
+              .catch(error =>
+                expect(/SequelizeUnique/.test(error.name)).to.be.true);
           }));
       });
     });
 
-    it('fails for invalid email', () => {
-      user.email = 'invalid email';
+    // Ensures the user email is valid.
+    it('Should fail for an invalid email', () => {
+      user.email = 'fortune';
       return user.save()
         .then(newUser => expect(newUser).to.not.exist)
-        .catch(err =>
-          expect(/isEmail failed/.test(err.message)).to.be.true);
+        .catch(error =>
+          expect(/failed/.test(error.message)).to.be.true);
     });
   });
 
-  describe('user.validPassword', () => {
-    it('valid for correct password', () =>
+
+  /**
+   * Test suite to ensure the password is valid
+   * when hashed.
+   */
+  describe('Validate hashed password', () => {
+    it('Should be valid for correct password', () =>
       user.save().then(newUser =>
         expect(newUser.validPassword(userParams.password)).to.be.true));
 
-    it('invalid for incorrect password', () =>
+    it('Should be invalid for incorrect password', () =>
       user.save().then(newUser =>
-        expect(newUser.validPassword('invalid password')).to.be.false));
+        expect(newUser.validPassword('fortune')).to.be.false));
   });
 });
