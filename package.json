@@ -27,7 +27,9 @@
     "url": "https://github.com/andela-efortune/documentManagementSystem/issues"
   },
   "homepage": "https://github.com/andela-efortune/documentManagementSystem#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "sequelize": "^3.27.0"
+  },
   "dependencies": {
     "babel": "^6.5.2",
     "babel-cli": "^6.18.0",

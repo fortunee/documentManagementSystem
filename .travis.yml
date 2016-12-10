@@ -10,9 +10,9 @@ services:
   - postgresql
 
 before_script:
-  - yarn
+  - yarn install
   - dropdb --if-exists docmanapi_test && createdb docmanapi_test
-  - npm run db:migrate:test
+  - npm run test_db_migrate
 
 after_success:
     - npm run coveralls
