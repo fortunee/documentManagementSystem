@@ -57,4 +57,17 @@ describe('Document model', () => {
       });
     });
   });
+
+
+  /**
+   * Test suite to ensure that each newly created document has
+   * the access set to public by default.
+   */
+  describe('Document access', () => {
+    it('Should set document access to public by default', () => {
+      document.save().then((newDoc) => {
+        expect(newDoc.access).to.equal('public');
+      });
+    });
+  });
 });
