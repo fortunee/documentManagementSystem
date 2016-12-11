@@ -7,14 +7,16 @@ import helper from '../specHelper';
 const expect = chai.expect;
 
 /**
- * Params user and role from the spec helper
+ * Params document, a type and a user from the spec helper
  */
 const docParams = helper.document;
 const typeParams = helper.type;
+const userParams = helper.user;
+const roleParams = helper.role;
 
 
 /**
- * Initialize a user for test
+ * Initialize a document for test
  */
 let document;
 
@@ -27,11 +29,15 @@ describe('Document model', () => {
    * beforeEach test runs.
    */
   beforeEach(() =>
-    db.Type.create(typeParams)
-      .then((type) => {
-        docParams.TypeId = type.id;
-        document = db.Document.build(docParams);
-      }));
+   db.Role.create(helper.role).then((role) => {
+     userParams.RoleId = role.id;
+     return db.User.create(userParams)
+       .then((user) => {
+         docParams.OwnerId = user.id;
+         document = db.Document.build(docParams);
+       });
+   })
+  );
 
   // clear database after a test done
   afterEach(() => db.Document.sequelize.sync({ force: true }));
