@@ -45,7 +45,7 @@ describe('Document model', () => {
 
   /**
    * Test suite ensure a new document is created with a published
-   * date
+   * date alongside other valid attributes.
    */
   describe('Create document', () => {
     it('Should create a new document', () => expect(document).to.exist);
@@ -54,8 +54,14 @@ describe('Document model', () => {
       document.save().then((newDoc) => {
         expect(newDoc).to.have.property('createdAt');
         expect(newDoc.createdAt).not.to.equal('undefined');
-      });
+      }).catch(error => expect(error).not.to.exist);
     });
+
+    it('Should create a document with valid attributes', () =>
+        document.save().then((newDoc) => {
+          expect(newDoc.title).to.equal(document.title);
+          expect(newDoc.content).to.equal(document.content);
+        }).catch(err => expect(err).to.not.exist));
   });
 
 
@@ -67,7 +73,7 @@ describe('Document model', () => {
     it('Should set document access to public by default', () => {
       document.save().then((newDoc) => {
         expect(newDoc.access).to.equal('public');
-      });
+      }).catch(error => expect(error).not.to.exist);
     });
   });
 });
