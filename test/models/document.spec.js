@@ -1,6 +1,5 @@
 import chai from 'chai';
 import db from '../../app/models';
-import app from '../../server';
 import helper from '../specHelper';
 
 /** Grab the expect method from chai */
