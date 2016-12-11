@@ -52,7 +52,8 @@ describe('Document model', () => {
 
     it('Should have a published date of each created document defined', () => {
       document.save().then((newDoc) => {
-        expect(newDoc.createdAt).to.be(true);
+        expect(newDoc).to.have.property('createdAt');
+        expect(newDoc.createdAt).not.to.equal('undefined');
       });
     });
   });
