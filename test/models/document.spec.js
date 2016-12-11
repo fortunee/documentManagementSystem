@@ -16,6 +16,11 @@ const roleParams = helper.role;
 
 
 /**
+ * Required document fields that should not be empty/null
+ */
+const requiredFields = ['title', 'content', 'OwnerId'];
+
+/**
  * Initialize a document for test
  */
 let document;
@@ -74,6 +79,33 @@ describe('Document model', () => {
       document.save().then((newDoc) => {
         expect(newDoc.access).to.equal('public');
       }).catch(error => expect(error).not.to.exist);
+    });
+  });
+
+
+  /**
+   * Test suite to ensure that validation checks work properly and
+   * the required fields are not supplied empty.
+   */
+  describe('Validations', () => {
+    describe('Required fields', () => {
+      requiredFields.forEach((field) => {
+        it(`Should fail without the ${field} field`, () => {
+          document[field] = null;
+
+          return document.save()
+            .then(newDoc => expect(newDoc).to.not.exist)
+            .catch(error => expect(/notNull/.test(error.message)).to.be.true);
+        });
+      });
+    });
+
+    it('Should fail when access field is not valid', () => {
+      document.access = 'crap';
+      return document.save()
+        .then(newDoc => expect(newDoc).to.not.exist)
+        .catch(error =>
+          expect(/isIn failed/.test(error.message)).to.be.true);
     });
   });
 });
