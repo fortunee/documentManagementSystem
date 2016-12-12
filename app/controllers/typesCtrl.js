@@ -13,6 +13,22 @@ const typesCtrl = {
     });
   },
 
+  /**
+   * Create a new type
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Void} no returns
+   */
+  createType(req, res) {
+    db.Type.create(req.body)
+      .then((type) => {
+        res.status(201).send(type);
+      })
+      .catch((err) => {
+        res.status(400).send(err.errors);
+      });
+  },
+
 
 };
 
