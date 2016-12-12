@@ -47,6 +47,27 @@ const typesCtrl = {
       });
   },
 
+  /**
+   * Edit and update a specific type
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Response} Response object
+   */
+  editType(req, res) {
+    db.Type.findById(req.params.id)
+      .then((type) => {
+        if (!type) {
+          return res.status(404)
+            .send({ message: 'Cannot edit a role that does not exist' });
+        }
+
+        type.update(req.body)
+          .then((updatedType) => {
+            res.send(updatedType);
+          });
+      });
+  },
+
 };
 
 module.exports = typesCtrl;
