@@ -25,7 +25,7 @@ const requiredFields = ['title', 'content', 'OwnerId'];
 let document;
 
 /**
- * Test suite for the document module
+ * Test suite for the document model
  */
 describe('Document model', () => {
   /**
