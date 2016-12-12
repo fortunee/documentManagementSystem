@@ -68,6 +68,25 @@ const typesCtrl = {
       });
   },
 
+  /**
+   * Delete a specific type
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  deleteType(req, res) {
+    db.Type.findById(req.params.id)
+      .then((type) => {
+        if (!type) {
+          return res.status(404)
+            .send({ message: 'Cannot delete a role that does not exist' });
+        }
+
+        type.destroy()
+          .then(() => res.send({ message: 'Type deleted.' }));
+      });
+  }
+
 };
 
 module.exports = typesCtrl;
