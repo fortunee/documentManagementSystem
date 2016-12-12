@@ -26,12 +26,21 @@ describe('Role model', () => {
   it('Should ensure the required field is not empty', () => {
     role.title = null;
 
-    role.save().then(newRole => expect(newRole).not.to.exist)
-    .catch(error =>
-      expect(/notNull/.test(error.message)).to.be.true);
+    return role.save()
+        .then(newRole => expect(newRole).not.to.exist)
+        .catch(error =>
+          expect(/notNull/.test(error.message)).to.be.true);
   });
 
   it('Should ensure the unique fields works fine', () => {
+    role.save().then((newRole) => {
+      const role2 = db.Role.build(helper.role);
+      role2.title = newRole.title;
 
+      return role2.save()
+        .then(newRole2 => expect(newRole2).not.to.exist)
+        .catch(error =>
+          expect(/SequelizeUnique/.test(error.name)).to.be.true);
+    });
   });
 });
