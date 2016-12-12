@@ -34,4 +34,22 @@ const docsCtrl = {
         res.status(400).send(err.errors);
       });
   },
+
+  /**
+   * Get a specific document
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  getDoc(req, res) {
+    db.Document.findById(req.params.id)
+      .then((document) => {
+        if (!document) {
+          return res.status(404)
+            .send({ message: `Document with the id: ${req.params.id} does not exit` });
+        }
+
+        res.send(document);
+      });
+  },
 };
