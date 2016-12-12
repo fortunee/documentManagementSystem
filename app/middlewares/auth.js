@@ -30,6 +30,26 @@ const Authentication = {
       req.decoded = decoded;
       next();
     });
+  },
+
+
+  /**
+   * verifyAdmin - Verifies that the user role is supplied is an admin
+   *
+   * @param  {object} req  Request object
+   * @param  {object} res  Response object
+   * @param  {function} next callback function
+   * @returns {object}      Response status
+   */
+  verifyAdmin(req, res, next) {
+    db.Role.findById(req.decoded.RoleId)
+      .then((role) => {
+        if (role.title === 'admin') {
+          next();
+        } else {
+          return res.status(403).send({ message: 'Access forbidden, you are not an admin!' });
+        }
+      });
   }
 
 };
