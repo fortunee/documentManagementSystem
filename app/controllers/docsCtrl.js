@@ -52,4 +52,25 @@ const docsCtrl = {
         res.send(document);
       });
   },
+
+  /**
+   * Edit and update a specific document
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  editDoc(req, res) {
+    db.Document.findById(req.params.id)
+      .then((document) => {
+        if (!document) {
+          return res.status(404)
+            .send({ message: 'Cannot edit a document that does not exist' });
+        }
+
+        document.update(req.body)
+          .then((updatedDocument) => {
+            res.send(updatedDocument);
+          });
+      });
+  },
 };
