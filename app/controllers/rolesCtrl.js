@@ -7,7 +7,7 @@ const rolesCtrl = {
    * @param {Object} res - Response object
    * @returns {Void} Returns Void
    */
-  index(req, res) {
+  allRoles(req, res) {
     db.Role.findAll().then((roles) => {
       res.send(roles);
     });
@@ -19,7 +19,7 @@ const rolesCtrl = {
    * @param {Object} res - Response object
    * @returns {Void} Returns Void
    */
-  create(req, res) {
+  createRole(req, res) {
     db.Role.create(req.body)
       .then((role) => {
         res.status(201).send(role);
@@ -29,6 +29,23 @@ const rolesCtrl = {
       });
   },
 
+  /**
+   * Grab a specific role
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  getRole(req, res) {
+    db.Role.findById(req.params.id)
+      .then((role) => {
+        if (!role) {
+          return res.status(404)
+            .send({ message: `Role with the id: ${req.params.id} does not exit` });
+        }
+
+        res.send(role);
+      });
+  },
 
 };
 
