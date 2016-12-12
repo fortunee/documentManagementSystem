@@ -106,3 +106,5 @@ const docsCtrl = {
       });
   }
 };
+
+module.exports = docsCtrl;
