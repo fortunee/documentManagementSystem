@@ -86,4 +86,23 @@ const docsCtrl = {
           });
       });
   },
+
+  /**
+   * Delete a specific document
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  deleteDoc(req, res) {
+    db.Document.findById(req.params.id)
+      .then((document) => {
+        if (!document) {
+          return res.status(404)
+            .send({ message: 'Cannot delete a document that does not exist' });
+        }
+
+        document.destroy()
+          .then(() => res.send({ message: 'Document deleted.' }));
+      });
+  }
 };
