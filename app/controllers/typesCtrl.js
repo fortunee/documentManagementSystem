@@ -1,4 +1,4 @@
-const db = require('../models');
+import db from '../models';
 
 const typesCtrl = {
   /**
