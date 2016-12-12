@@ -68,6 +68,24 @@ const rolesCtrl = {
       });
   },
 
+  /**
+   * Delete a role
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  deleteRole(req, res) {
+    db.Role.findById(req.params.id)
+      .then((role) => {
+        if (!role) {
+          return res.status(404)
+            .send({ message: 'Cannot delete a role that does not exist' });
+        }
+
+        role.destroy()
+          .then(() => res.send({ message: 'Role deleted.' }));
+      });
+  }
 
 };
 
