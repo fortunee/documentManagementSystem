@@ -56,6 +56,17 @@ const userCtrl = {
 
 
   /**
+   * logout - Logout a user
+   *
+   * @param  {Objec} req Request Object
+   * @param  {Object} res Response Object
+   * @returns {Void}     Returns Void
+   */
+  logout(req, res) {
+    res.send({ message: 'Successfully logged out.' });
+  },
+
+  /**
    * Grab all users with their fields
    * @param {Object} req - Request object
    * @param {Object} res - Response object
