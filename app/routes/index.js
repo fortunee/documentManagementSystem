@@ -1,5 +1,5 @@
-import userRoute from './userRoute';
-import docRoute from './docRoute';
+import userRoute from './usersRoute';
+import docRoute from './docsRoute';
 
 // Configure routes
 const routes = (router) => {
