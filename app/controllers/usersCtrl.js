@@ -101,6 +101,29 @@ const userCtrl = {
        res.send(user);
      });
   },
+
+  /**
+   * Edit and update a specific user
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  editUser(req, res) {
+    db.User.findById(req.params.id)
+      .then((user) => {
+        if (!user) {
+          return res.status(404)
+            .send({ message: 'Cannot edit a user that does not exist' });
+        }
+
+        user.update(req.body)
+          .then((updatedUser) => {
+            updatedUser = allUserFields(updatedUser);
+
+            res.send(updatedUser);
+          });
+      });
+  },
 };
 
 module.exports = userCtrl;
