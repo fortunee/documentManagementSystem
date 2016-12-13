@@ -64,7 +64,7 @@ const userCtrl = {
       .then((userExists) => {
         if (userExists) {
           return res.status(409)
-            .send({ message: `There's user with this email: ${req.body.email}` });
+            .send({ message: `There's no user with this email: ${req.body.email}` });
         }
 
         db.User.create(req.body)
@@ -81,6 +81,25 @@ const userCtrl = {
             res.status(400).send(err.errors);
           });
       });
+  },
+
+  /**
+  * Get a specific user
+  * @param {Object} req Request object
+  * @param {Object} res Response object
+  * @returns {Object} Response object
+  */
+  getUser(req, res) {
+    db.User.findById(req.params.id)
+     .then((user) => {
+       if (!user) {
+         return res.status(404)
+           .send({ message: `User with the id: ${req.params.id} does not exist` });
+       }
+
+       user = allUserFields(user);
+       res.send(user);
+     });
   },
 };
 
