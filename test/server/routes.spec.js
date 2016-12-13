@@ -11,45 +11,45 @@ const request = supertest.agent(app);
 const expect = chai.expect;
 
 /**
- * Ensure the freaking /users route loads properly
+ * Ensure the freaking /users route runs properly
  */
 describe('Users Route /api/users', () => {
-  it('Should return a 200 ok on get request', (done) => {
+  it('Should return a 401 Unauthorized on get request', (done) => {
     request
       .get('/api/users')
       .set('Accept', 'application/json')
-      .expect(200, done);
+      .expect(401, done);
   });
 
-  it('Should return a 200 ok response on a post request', (done) => {
+  it('Should return a 400 Bad Request response on a post request', (done) => {
     request
       .post('/api/users')
-      .expect(200, done);
+      .expect(400, done);
   });
 });
 
 /**
  * Test suite to ensure that /users/:username route with a param of
- * username returns a 200 ok response on a put, get or delete request.
+ * username returns a 401 Unauthorized response on a put, get or delete request.
  */
 describe('users/:username route with a username param', () => {
-  it('Should return a 200 ok response on a put request', (done) => {
+  it('Should return a 401 Unauthorized response on a put request', (done) => {
     request
       .put('/api/users/fortune')
-      .expect(200, done);
+      .expect(401, done);
   });
 
-  it('Should return a 200 ok response on a get request', (done) => {
+  it('Should return a 401 Unauthorized response on a get request', (done) => {
     request
       .get('/api/users/fortune')
       .set('Accept', 'application/json')
-      .expect(200, done);
+      .expect(401, done);
   });
 
-  it('Should return a 200 ok response on a delete request', (done) => {
+  it('Should return a 401 Unauthorized response on a delete request', (done) => {
     request
       .delete('/api/users/fortune')
-      .expect(200, done);
+      .expect(401, done);
   });
 });
 
@@ -60,7 +60,7 @@ describe('users/:username route with a username param', () => {
  */
 describe('Users login route', () => {
   it('Should return a response on a post request', (done) => {
-    request.post('/api/users/login').expect(200, done);
+    request.post('/api/users/login').expect(401, done);
   });
 });
 
