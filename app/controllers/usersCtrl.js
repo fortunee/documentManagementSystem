@@ -52,6 +52,36 @@ const userCtrl = {
       res.send(users);
     });
   },
+
+  /**
+   * Create a new user
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
+   * @returns {Object} Response object
+   */
+  createUser(req, res) {
+    db.User.findOne({ where: { email: req.body.email } })
+      .then((userExists) => {
+        if (userExists) {
+          return res.status(409)
+            .send({ message: `There's user with this email: ${req.body.email}` });
+        }
+
+        db.User.create(req.body)
+          .then((user) => {
+            const token = jwt.sign({
+              UserId: user.id,
+              RoleId: user.RoleId
+            }, secret, { expiresIn: '2 days' });
+
+            user = allUserFields(user);
+            res.status(201).send({ token, expiresIn: '2 days', user });
+          })
+          .catch((err) => {
+            res.status(400).send(err.errors);
+          });
+      });
+  },
 };
 
 module.exports = userCtrl;
