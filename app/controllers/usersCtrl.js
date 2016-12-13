@@ -124,6 +124,25 @@ const userCtrl = {
           });
       });
   },
+
+  /**
+   * Delete a specific user
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  deleteUser(req, res) {
+    db.User.findById(req.params.id)
+      .then((user) => {
+        if (!user) {
+          return res.status(404)
+            .send({ message: 'Cannot delete a user that does not exist' });
+        }
+
+        user.destroy()
+          .then(() => res.send({ message: 'User deleted.' }));
+      });
+  }
 };
 
 module.exports = userCtrl;
