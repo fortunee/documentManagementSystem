@@ -14,15 +14,9 @@ const userRoute = (router) => {
 
   // A single user endpoint
   router.route('/users/:username')
-    .put((req, res) => {
-      res.send({ message: 'Update some user' });
-    })
-    .get((req, res) => {
-      res.send({ message: 'Get a specific user' });
-    })
-    .delete((req, res) => {
-      res.send({ message: 'Delete a specific user' });
-    });
+    .put(Authentication.verifyToken, usersCtrl.editUser)
+    .get(Authentication.verifyToken, usersCtrl.getUser)
+    .delete(Authentication.verifyToken, usersCtrl.deleteUser);
 
   // User's login endpoint
   router.route('/users/login').post((req, res) => {

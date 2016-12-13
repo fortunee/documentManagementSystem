@@ -126,11 +126,11 @@ const userCtrl = {
   * @returns {Object} Response object
   */
   getUser(req, res) {
-    db.User.findById(req.params.id)
+    db.User.findOne({ where: { username: req.params.username } })
      .then((user) => {
        if (!user) {
          return res.status(404)
-           .send({ message: `User with the id: ${req.params.id} does not exist` });
+           .send({ message: `User with username: ${req.params.username} does not exist` });
        }
 
        user = allUserFields(user);
@@ -145,7 +145,7 @@ const userCtrl = {
    * @returns {Object} Response object
    */
   editUser(req, res) {
-    db.User.findById(req.params.id)
+    db.User.findOne({ where: { username: req.params.username } })
       .then((user) => {
         if (!user) {
           return res.status(404)
@@ -168,7 +168,7 @@ const userCtrl = {
    * @returns {Object} Response object
    */
   deleteUser(req, res) {
-    db.User.findById(req.params.id)
+    db.User.findOne({ where: { username: req.params.username } })
       .then((user) => {
         if (!user) {
           return res.status(404)
