@@ -30,6 +30,31 @@ const allUserFields = (user) => {
  * Users controller
  */
 const userCtrl = {
+
+  /**
+   * Login a user
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  login(req, res) {
+    db.User.findOne({ where: { email: req.body.email } })
+      .then((user) => {
+        if (user && user.validPassword(req.body.password)) {
+          const token = jwt.sign({
+            UserId: user.id,
+            RoleId: user.RoleId
+          }, secret, { expiresIn: '2 days' });
+
+          res.send({ token, expiresIn: '2 days' });
+        } else {
+          res.status(401)
+            .send({ message: 'Authentication failed due to invalid credentials.' });
+        }
+      });
+  },
+
+
   /**
    * Grab all users with their fields
    * @param {Object} req - Request object
