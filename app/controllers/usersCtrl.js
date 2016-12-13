@@ -33,8 +33,8 @@ const userCtrl = {
 
   /**
    * Login a user
-   * @param {Object} req Request object
-   * @param {Object} res Response object
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
    * @returns {Object} Response object
    */
   login(req, res) {
@@ -58,8 +58,8 @@ const userCtrl = {
   /**
    * logout - Logout a user
    *
-   * @param  {Objec} req Request Object
-   * @param  {Object} res Response Object
+   * @param  {Objec} req - Request Object
+   * @param  {Object} res - Response Object
    * @returns {Void}     Returns Void
    */
   logout(req, res) {
@@ -121,8 +121,8 @@ const userCtrl = {
 
   /**
   * Get a specific user
-  * @param {Object} req Request object
-  * @param {Object} res Response object
+  * @param {Object} req - Request object
+  * @param {Object} res - Response object
   * @returns {Object} Response object
   */
   getUser(req, res) {
@@ -140,8 +140,8 @@ const userCtrl = {
 
   /**
    * Edit and update a specific user
-   * @param {Object} req Request object
-   * @param {Object} res Response object
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
    * @returns {Object} Response object
    */
   editUser(req, res) {
@@ -163,8 +163,8 @@ const userCtrl = {
 
   /**
    * Delete a specific user
-   * @param {Object} req Request object
-   * @param {Object} res Response object
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
    * @returns {Object} Response object
    */
   deleteUser(req, res) {

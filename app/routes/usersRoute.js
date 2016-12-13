@@ -1,9 +1,7 @@
 /**
- * Import users and documents controllers
- * alongside authentication and authentication.
+ * Import users controllers and authentication middlewares.
  */
 import usersCtrl from '../../app/controllers/usersCtrl';
-import docsCtrl from '../../app/controllers/docsCtrl';
 import Authentication from '../../app/middlewares/auth';
 
 const userRoute = (router) => {
@@ -19,14 +17,10 @@ const userRoute = (router) => {
     .delete(Authentication.verifyToken, usersCtrl.deleteUser);
 
   // User's login endpoint
-  router.route('/users/login').post((req, res) => {
-    res.send({ message: 'login endpoint' });
-  });
+  router.route('/users/login').post(usersCtrl.login);
 
   // Users logout endpoint
-  router.route('/users/logout').post((req, res) => {
-    res.send({ message: 'logout endpoint' });
-  });
+  router.route('/users/logout').post(usersCtrl.logout);
 };
 
 export default userRoute;
