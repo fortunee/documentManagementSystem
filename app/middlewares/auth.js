@@ -5,7 +5,7 @@ import db from '../models';
 /**
  * Secret token for jsonwebtoken
  */
-const secret = process.env.SECRET_TOKEN || 'self love';
+const secret = process.env.SECRET || 'jump drop mobs kicking it in';
 
 const Authentication = {
 

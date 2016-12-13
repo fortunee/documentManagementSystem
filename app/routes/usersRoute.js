@@ -1,17 +1,16 @@
 /**
- * @TODO: Add and import users controllers
+ * Import users and documents controllers
  * alongside authentication and authentication.
  */
+import usersCtrl from '../../app/controllers/usersCtrl';
+import docsCtrl from '../../app/controllers/docsCtrl';
+import Authentication from '../../app/middlewares/auth';
 
 const userRoute = (router) => {
   // Get all users or create a new user
   router.route('/users')
-   .post((req, res) => {
-     res.send({ message: 'post some data to users endpoint' });
-   })
-   .get((req, res) => {
-     res.send({ message: 'Get all users' });
-   });
+   .post(usersCtrl.createUser)
+   .get(Authentication.verifyToken, Authentication.verifyAdmin, usersCtrl.allUsers);
 
   // A single user endpoint
   router.route('/users/:username')
@@ -37,4 +36,3 @@ const userRoute = (router) => {
 };
 
 export default userRoute;
-

@@ -15,7 +15,7 @@ const allUserFields = (user) => {
     id: user.id,
     username: user.username,
     firstName: user.firstName,
-    lastNamse: user.lastName,
+    lastName: user.lastName,
     email: user.email,
     RoleId: user.RoleId,
     createdAt: user.createdAt,
