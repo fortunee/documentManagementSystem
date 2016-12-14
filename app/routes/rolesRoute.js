@@ -7,7 +7,7 @@ import Authentication from '../../app/middlewares/auth';
 
 const rolesRoute = (router) => {
   router.route('/roles')
-    .get(Authentication.verifyToken, rolesCtrl.allRoles)
+    .get(Authentication.verifyToken, Authentication.verifyAdmin, rolesCtrl.allRoles)
     .post(Authentication.verifyToken, Authentication.verifyAdmin, rolesCtrl.createRole);
 
   router.route('/roles/:id')
