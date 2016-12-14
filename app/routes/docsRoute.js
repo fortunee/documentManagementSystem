@@ -1,5 +1,5 @@
 /**
- * Import users controllers and authentication middlewares.
+ * Import documents controllers and authentication middlewares.
  */
 import docsCtrl from '../../app/controllers/docsCtrl';
 import Authentication from '../../app/middlewares/auth';
