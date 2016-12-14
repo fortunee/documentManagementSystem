@@ -23,7 +23,7 @@ const docsCtrl = {
    * Gets all documents belonging to a specific user
    * @param {Object} req Request object
    * @param {Object} res Response object
-   * @returns {Void} Returns
+   * @returns {Void} Returns Void
    */
   getUserDocuments(req, res) {
     db.Document.findAll({ where: { OwnerId: req.params.id } })
