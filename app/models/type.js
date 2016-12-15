@@ -1,6 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const Type = sequelize.define('Type', {
-    title: DataTypes.STRING
+    title: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
+    }
   }, {
     classMethods: {
       associate: (models) => {

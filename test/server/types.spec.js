@@ -15,23 +15,29 @@ const expect = chai.expect;
 /**
  * Role and User helpers
  */
+const typeHelper = helper.type;
 const roleHelper = helper.role;
 const userHelper = helper.user;
 
 /**
  * Initialize a role and a token for test
  */
-let role, token;
+let type, role, token;
 /**
  * Role test suite
  */
-describe('Role', () => {
+describe('Type', () => {
   beforeEach(() => {
-    // role = db.Role.build(roleHelper);
+    type = db.Type.build(roleHelper);
     db.Role.create(roleHelper)
       .then((newRole) => {
         role = newRole;
         userHelper.RoleId = newRole.id;
+      });
+    db.Type.create(typeHelper)
+      .then((newType) => {
+        // type = newType;
+        userHelper.TypeId = newType.id;
       });
   });
 
@@ -49,44 +55,53 @@ describe('Role', () => {
       });
   });
 
-  it('Ensures an admin can create a new role', (done) => {
-    request.post('/api/roles')
+  it('Ensures an authenticated user can create a new type', (done) => {
+    request.post('/api/types')
       .set({ 'x-access-token': token })
-      .send(roleHelper)
+      .send(typeHelper)
       .expect(201);
     done();
   });
 
-  it('Ensures the role has a unique title', () => {
-    role.save().then((newRole) => {
-      const role2 = db.Role.build(roleHelper);
-      role2.title = newRole.title;
+  it('Ensures the type has a unique title', () => {
+    type.save().then((newType) => {
+      const type2 = db.Role.build(typeHelper);
+      type2.title = newType.title;
 
-      return role2.save()
-        .then(newRole2 => expect(newRole2).not.to.exist)
+      return type2.save()
+        .then(newType2 => expect(newType2).not.to.exist)
         .catch(error =>
           expect(/SequelizeUnique/.test(error.name)).to.be.true);
     });
   });
 
-  it('Ensures the roles can only be retrieved by an admin', () => {
-    request.get('/api/role')
+  it('Ensures the types can be fetched', () => {
+    request.get('/api/types')
       .set({ 'x-access-token': token })
       .expect(200);
   });
 
-  it('Should have atleast an admin and a regular role', () => {
-    const role2 = db.Role.build(roleHelper);
-    role2.title = 'regular';
-    expect(role.title).to.equal('admin');
-    expect(role2.title).to.equal('regular');
+  it('Ensures a type can be updated', (done) => {
+    typeHelper.title = 'medical';
+    request.put('/api/types/1')
+      .set({ 'x-access-token': token })
+      .send(typeHelper)
+      .expect(201);
+    done();
+  });
+
+  it('Ensures a type can be deleted', (done) => {
+    request.delete('/api/types/1')
+      .set({ 'x-access-token': token })
+      .expect(200);
+    done();
   });
 
   it('Ensures the required title field is not empty', () => {
-    role.title = null;
-
-    return role.save()
-        .then(newRole => expect(newRole).not.to.exist)
+    type.title = null;
+    // const type2 = db.Type.build(typeHelper);
+    return type.save()
+        .then(newType => expect(newType).not.to.exist)
         .catch(error =>
           expect(/notNull/.test(error.message)).to.be.true);
   });

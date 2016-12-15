@@ -33,19 +33,8 @@ describe('Document model', () => {
    * Build and populate the document and type tables
    * beforeEach test runs.
    */
-  // beforeEach(() =>
-  //  db.Role.create(helper.role).then((role) => {
-  //    userHelper.RoleId = role.id;
-  //    return db.User.create(userHelper)
-  //      .then((user) => {
-  //        docHelper.OwnerId = user.id;
-  //        docHelper.access = 'private';
-  //        document = db.Document.build(docHelper);
-  //      });
-  //  })
-  // );
   beforeEach(() =>
-      db.Role.create(helper.role)
+      db.Role.create(roleHelper)
         .then((role) => {
           userHelper.RoleId = role.id;
           return db.User.create(userHelper);
@@ -64,7 +53,7 @@ describe('Document model', () => {
         }));
 
   // clear database after a test done
-  afterEach(() => db.Document.sequelize.sync({ force: true }));
+  afterEach(() => db.Document.sequelize.sync({ force: true, logging: false }));
 
   it('Ensures a newly created document has published date defined', () => {
     document.save().then((newDoc) => {
