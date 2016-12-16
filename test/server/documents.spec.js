@@ -188,14 +188,24 @@ describe('Document model', () => {
     request.post('/api/documents')
       .set({ 'x-access-token': token })
       .send(helper.document3)
+      .end(res => expect(res.body).to.exist)
       .expect(201)
-      .catch(error => expect(400).not.to.exist);
+      .catch(error => expect(400).to.exist);
     done();
   });
 
-  it('Should fail if a document does not exist', () => {
+  it('Should fail if a document does not exist', (done) => {
     request.get('/api/documents/7')
       .set({ 'x-access-token': token })
       .expect(404);
+    done();
+  });
+  
+  it('Should be updated by the owner of the doc', () => {
+    request.put('/api/documents/2')
+      .set({ 'x-access-token': token })
+      .send({ title: 'Hi updated' })
+      .end(res => expect(res.body).to.exist)
+      .catch(err => expect(err.message).to.exist);
   });
 });
