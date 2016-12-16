@@ -9,6 +9,9 @@ module.exports = {
   role: {
     title: 'admin'
   },
+  role2: {
+    title: 'regular'
+  },
   type: {
     title: 'letter'
   },
@@ -29,6 +32,11 @@ module.exports = {
   },
 
   document: {
+    title: faker.company.catchPhrase(),
+    content: faker.lorem.paragraph()
+  },
+
+  document2: {
     title: faker.company.catchPhrase(),
     content: faker.lorem.paragraph()
   }

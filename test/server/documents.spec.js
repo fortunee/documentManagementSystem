@@ -20,10 +20,16 @@ const typeHelper = helper.type;
 const userHelper = helper.user;
 const roleHelper = helper.role;
 
+
+/**
+ * Required document fields that should not be empty/null
+ */
+const requiredFields = ['title', 'content', 'OwnerId'];
+
 /**
  * Initialize a document for test
  */
-let document, token;
+let document, token, regularToken;
 
 /**
  * Test suite for the document model
@@ -50,7 +56,9 @@ describe('Document model', () => {
             .end((err, res) => {
               token = res.body.token;
             });
-        }));
+        })
+      );
+
 
   // clear database after a test done
   afterEach(() => db.Document.sequelize.sync({ force: true, logging: false }));
@@ -62,15 +70,23 @@ describe('Document model', () => {
     }).catch(error => expect(error).not.to.exist);
   });
 
+  it('Should create a document with valid attributes', () =>
+      document.save().then((newDoc) => {
+        expect(newDoc.title).to.equal(document.title);
+        expect(newDoc.content).to.equal(document.content);
+      }).catch(err => expect(err).to.not.exist));
+
   it('Ensures a document access is set to public by default', () => {
     document.save().then((newDoc) => {
       expect(newDoc.access).to.equal('public');
     }).catch(error => expect(error).not.to.exist);
   });
 
-  it('Ensures a private document can only be retrieved by the creator', (done) => {
+  it('Ensures a private document can only be retrieved by the creator and admin',
+  (done) => {
     docHelper.access = 'private';
-    request.get('/api/documents/1').set({ 'x-access-token': token })
+    request.get('/api/documents/1')
+      .set({ 'x-access-token': token })
         .expect(200).end((err, res) => {
           if (err) {
             return done(err);
@@ -93,17 +109,68 @@ describe('Document model', () => {
   });
 
   it('Should be limited to a specific number in query params', (done) => {
-    request.get('/api/documents/?limit=5')
-      .set({ 'x-access-token': token })
-      .expect(200).end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        for (let i = 0; i < res.body.length - 1; i += 1) {
-          expect(res.body[i].createdAt).to.be.at
-            .least(res.body[i + 1].createdAt);
-        }
-        done();
+    helper.document2.OwnerId = 1;
+    db.Document.create(helper.document2)
+      .then((newDoc) => {
+        request.get('/api/documents/?limit=5')
+          .set({ 'x-access-token': token })
+          .expect(200).end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            expect(res.body).to.have.length.of.at.most(5);
+            for (let i = 0; i < res.body.length - 1; i += 1) {
+              expect(res.body[i].id).to.be
+                .above(res.body[i + 1].id);
+            }
+            done();
+          });
       });
+  });
+
+
+  /**
+   * Test suite for admin access to docs
+   */
+  describe('Admin access', () => {
+    it('Should return all docs to an admin', (done) => {
+      const accessTypes = ['role', 'public', 'private'];
+      request.get('/api/documents')
+        .set({ 'x-access-token': token })
+        .expect(200).end((err, res) => {
+          if (err) return done(err);
+          res.body.forEach((doc) => {
+            expect(accessTypes.includes(doc.access))
+              .to.equal(true);
+          });
+          done();
+        });
+    });
+  });
+
+  /**
+   * Test suite to ensure that validation checks work properly and
+   * the required fields are not supplied empty.
+   */
+  describe('Validations', () => {
+    describe('Required fields', () => {
+      requiredFields.forEach((field) => {
+        it(`Should fail without the ${field} field`, () => {
+          document[field] = null;
+
+          return document.save()
+            .then(newDoc => expect(newDoc).to.not.exist)
+            .catch(error => expect(/notNull/.test(error.message)).to.be.true);
+        });
+      });
+    });
+
+    it('Should fail when access field is not valid', () => {
+      document.access = 'crap';
+      return document.save()
+        .then(newDoc => expect(newDoc).to.not.exist)
+        .catch(error =>
+          expect(/isIn failed/.test(error.message)).to.be.true);
+    });
   });
 });
