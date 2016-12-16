@@ -197,7 +197,8 @@ describe('Document model', () => {
   it('Should fail if a document does not exist', (done) => {
     request.get('/api/documents/7')
       .set({ 'x-access-token': token })
-      .expect(404);
+      .expect(404)
+      .end(res => expect(res.status(404)).to.exist);
     done();
   });
 
