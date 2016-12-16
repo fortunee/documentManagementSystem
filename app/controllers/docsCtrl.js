@@ -1,21 +1,23 @@
 import db from '../models';
+import helpCtrl from './helpCtrl';
 
 
 const docsCtrl = {
+
   /**
-   * Gets all documents
+   * Gets all documents depending on who is requesting
    * @param {Object} req Request object
    * @param {Object} res Response object
    * @returns {Void} Returns Void
    */
   allDocs(req, res) {
-    const query = {
-      limit: req.query.limit || null,
-      offset: req.query.offset || null
-    };
-
-    db.Document.findAll(query).then((documents) => {
-      res.send(documents);
+    db.Role.findById(req.decoded.RoleId)
+    .then((role) => {
+      if (role.title === 'admin') {
+        helpCtrl.isAdmin(req, res);
+      } else {
+        helpCtrl.isNotAdmin(req, res);
+      }
     });
   },
 
@@ -39,6 +41,7 @@ const docsCtrl = {
    * @returns {Void} Returns Void
    */
   createDoc(req, res) {
+    req.body.OwnerId = req.decoded.UserId;
     db.Document.create(req.body)
       .then((document) => {
         res.status(201).send(document);
@@ -52,25 +55,39 @@ const docsCtrl = {
    * Get a specific document
    * @param {Object} req Request object
    * @param {Object} res Response object
-   * @returns {Object} Response object
+   * @returns {Void} Returns Void
    */
   getDoc(req, res) {
     db.Document.findById(req.params.id)
-      .then((document) => {
-        if (!document) {
-          return res.status(404)
-            .send({ message: `Document with the id: ${req.params.id} does not exit` });
-        }
+     .then((document) => {
+       if (!document) {
+         return res.status(404)
+           .send({
+             message: `Document with the id: ${req.params.id} does not exit`
+           });
+       }
 
-        res.send(document);
-      });
+       db.Role.findById(req.decoded.RoleId)
+         .then((role) => {
+           if (role.title === 'admin') {
+             res.send(document);
+           } else {
+             if (document.access === 'private'
+                 && document.OwnerId !== req.decoded.UserId) {
+               return res.status(404)
+                 .send({ message: 'This is a private document' });
+             }
+             res.send(document);
+           }
+         });
+     });
   },
 
   /**
    * Edit and update a specific document
    * @param {Object} req Request object
    * @param {Object} res Response object
-   * @returns {Object} Response object
+   * @returns {Void} Returns Void
    */
   editDoc(req, res) {
     db.Document.findById(req.params.id)
@@ -78,6 +95,11 @@ const docsCtrl = {
         if (!document) {
           return res.status(404)
             .send({ message: 'Cannot edit a document that does not exist' });
+        }
+
+        if (document.OwnerId !== req.decoded.UserId) {
+          return res.status(404)
+            .send({ message: 'You are not the owner of this document' });
         }
 
         document.update(req.body)
@@ -91,7 +113,7 @@ const docsCtrl = {
    * Delete a specific document
    * @param {Object} req Request object
    * @param {Object} res Response object
-   * @returns {Object} Response object
+   * @returns {Void} Returns Void
    */
   deleteDoc(req, res) {
     db.Document.findById(req.params.id)
@@ -99,6 +121,11 @@ const docsCtrl = {
         if (!document) {
           return res.status(404)
             .send({ message: 'Cannot delete a document that does not exist' });
+        }
+
+        if (document.OwnerId !== req.decoded.UserId) {
+          return res.status(404)
+            .send({ message: 'This document does not belong to you' });
         }
 
         document.destroy()

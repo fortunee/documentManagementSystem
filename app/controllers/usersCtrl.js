@@ -100,11 +100,12 @@ const userCtrl = {
       .then((userExists) => {
         if (userExists) {
           return res.status(409)
-            .send({ message: `There's no user with this email: ${req.body.email}` });
+            .send({ message: `There's a user with this email: ${req.body.email}` });
         }
 
         db.User.create(req.body)
           .then((user) => {
+            // user.RoleId = 2;
             const token = jwt.sign({
               UserId: user.id,
               RoleId: user.RoleId
