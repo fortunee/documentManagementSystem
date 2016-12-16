@@ -39,5 +39,10 @@ module.exports = {
   document2: {
     title: faker.company.catchPhrase(),
     content: faker.lorem.paragraph()
+  },
+
+  document3: {
+    title: faker.company.catchPhrase(),
+    content: faker.lorem.paragraph()
   }
 };

@@ -61,7 +61,7 @@ describe('Document model', () => {
 
 
   // clear database after a test done
-  afterEach(() => db.Document.sequelize.sync({ force: true, logging: false }));
+  afterEach(() => db.Document.sequelize.sync({ force: true }));
 
   it('Ensures a newly created document has published date defined', () => {
     document.save().then((newDoc) => {
@@ -128,6 +128,16 @@ describe('Document model', () => {
       });
   });
 
+  it('Should get all documents for a specific user', (done) => {
+    request.get('/api/users/1/documents')
+      .set({ 'x-access-token': token })
+      .expect(200).end((err, res) => {
+        if (err) return done(err);
+        expect(Array.isArray(res.body)).to.equal(true);
+        done();
+      });
+  });
+
 
   /**
    * Test suite for admin access to docs
@@ -172,5 +182,20 @@ describe('Document model', () => {
         .catch(error =>
           expect(/isIn failed/.test(error.message)).to.be.true);
     });
+  });
+
+  it('Should create a new document', (done) => {
+    request.post('/api/document')
+      .set({ 'x-access-token': token })
+      .send(helper.document3)
+      .expect(201)
+      .catch(error => expect(400).not.to.exist);
+    done();
+  });
+
+  it('Should fail if a document does not exist', () => {
+    request.get('/api/documents/7')
+      .set({ 'x-access-token': token })
+      .expect(404);
   });
 });
