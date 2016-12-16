@@ -185,7 +185,7 @@ describe('Document model', () => {
   });
 
   it('Should create a new document', (done) => {
-    request.post('/api/document')
+    request.post('/api/documents')
       .set({ 'x-access-token': token })
       .send(helper.document3)
       .expect(201)
