@@ -200,12 +200,22 @@ describe('Document model', () => {
       .expect(404);
     done();
   });
-  
-  it('Should be updated by the owner of the doc', () => {
+
+  it('Should be updated by the owner of the doc', (done) => {
     request.put('/api/documents/2')
       .set({ 'x-access-token': token })
       .send({ title: 'Hi updated' })
       .end(res => expect(res.body).to.exist)
+      .catch(err => expect(err.message).to.exist);
+    done();
+  });
+
+  it('Should ensure a doc can be deleted by the owner', () => {
+    request.delete('/api/documents/1')
+      .set({ 'x-access-token': token })
+      .expect(202).end((err, res) => {
+        expect(typeof res.body).to.equal('object');
+      })
       .catch(err => expect(err.message).to.exist);
   });
 });
