@@ -124,7 +124,7 @@ const docsCtrl = {
         }
 
         if (document.OwnerId !== req.decoded.UserId) {
-          return res.status(404)
+          return res.status(403)
             .send({ message: 'This document does not belong to you' });
         }
 

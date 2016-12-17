@@ -87,7 +87,25 @@ module.exports = {
     RoleId: 2
   },
 
+  regularUser5: {
+    username: faker.internet.userName(),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    RoleId: 2
+  },
+
   testUser: {
+    username: faker.internet.userName(),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    RoleId: 2
+  },
+
+  testUser2: {
     username: faker.internet.userName(),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
@@ -103,7 +121,8 @@ module.exports = {
 
   document2: {
     title: faker.company.catchPhrase(),
-    content: faker.lorem.paragraph()
+    content: faker.lorem.paragraph(),
+    access: 'private'
   },
 
   document3: {
