@@ -9,7 +9,7 @@
     "seed": "NODE_ENV=test ./node_modules/.bin/babel-node test/seedHelper.js",
     "mocha":"mocha --compilers js:babel-core/register test/server",
     "test": "NODE_ENV=test npm run seed && NODE_ENV=test npm run mocha",
-    "cover": "rm -rf coverage/ && npm run seed && NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report html -- -R spec",
+    "cover": "rm -rf coverage/ && npm run seed && NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
