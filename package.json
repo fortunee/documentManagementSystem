@@ -6,8 +6,10 @@
   "scripts": {
     "start": "nodemon server.js --exec babel-node --presets es2015,stage-2",
     "test_db_migrate": "sequelize db:migrate",
-    "test": "NODE_ENV=test mocha --compilers js:babel-core/register test/server",
-    "cover": "rm -rf coverage/ && NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
+    "seed": "NODE_ENV=test ./node_modules/.bin/babel-node test/seedHelper.js",
+    "mocha":"mocha --compilers js:babel-core/register test/server",
+    "test": "NODE_ENV=test npm run seed && NODE_ENV=test npm run mocha",
+    "cover": "rm -rf coverage/ && npm run seed && NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report html -- -R spec",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {

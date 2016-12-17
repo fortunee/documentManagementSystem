@@ -1,8 +1,8 @@
 import chai from 'chai';
 import supertest from 'supertest';
 import db from '../../app/models';
+import app from '../../app/config/app';
 import helper from '../specHelper';
-import app from '../../server';
 
 /**
  * Here is a request handler from supertest
@@ -13,81 +13,163 @@ const request = supertest.agent(app);
 const expect = chai.expect;
 
 /**
- * Role and User helpers
+ * Admin and Regular users
  */
-const roleHelper = helper.role;
-const userHelper = helper.user;
+const adminUser = helper.adminUser2;
+const regularUser = helper.regularUser2;
+const testUser = helper.testUser;
 
 /**
  * Initialize a role and a token for test
  */
-let role, token;
-/**
- * Role test suite
- */
+let role, adminToken, regularToken;
+
 describe('Role', () => {
-  beforeEach(() => {
-    // role = db.Role.build(roleHelper);
-    db.Role.create(roleHelper)
-      .then((newRole) => {
-        role = newRole;
-        userHelper.RoleId = newRole.id;
-      });
-  });
-
-  // clear database after test done
-  afterEach(() => db.Role.sequelize.sync({ force: true, logging: false }));
-
-  /**
-   * Create a user and use the generated token
-   */
-  it('Should create a new user', () => {
+  before((done) => {
     request.post('/api/users')
-      .send(userHelper)
-      .expect(201).end((err, res) => {
-        token = res.body.token;
+      .send(adminUser)
+      .expect(201)
+      .end((err, res) => {
+        adminToken = res.body.token;
+      });
+
+    request.post('/api/users')
+      .send(regularUser)
+      .end((err, res) => {
+        regularToken = res.body.token;
+        done();
       });
   });
 
-  it('Ensures an admin can create a new role', (done) => {
-    request.post('/api/roles')
-      .set({ 'x-access-token': token })
-      .send(roleHelper)
-      .expect(201);
-    done();
-  });
+  describe('Create role', () => {
+    it('Ensures an admin can create a new role', (done) => {
+      request.post('/api/roles')
+        .set({ 'x-access-token': adminToken })
+        .send({ title: 'new role' })
+        .expect(201)
+        .end((err, res) => {
+          if (err) return done(err);
+          done();
+        });
+    });
 
-  it('Ensures the role has a unique title', () => {
-    role.save().then((newRole) => {
-      const role2 = db.Role.build(roleHelper);
-      role2.title = newRole.title;
+    it('Should have a unique role title', (done) => {
+      request.post('/api/roles')
+        .set({ 'x-access-token': adminToken })
+        .send({ title: 'new role' })
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          done();
+        });
+    });
 
-      return role2.save()
-        .then(newRole2 => expect(newRole2).not.to.exist)
-        .catch(error =>
-          expect(/SequelizeUnique/.test(error.name)).to.be.true);
+    it('Should fail for a non admin', (done) => {
+      request.post('/api/roles')
+        .set({ 'x-access-token': regularToken })
+        .send({ title: 'new role' })
+        .expect(403)
+        .end((err, res) => {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it('Should fail if a title is null', (done) => {
+      request.post('/api/roles')
+        .set({ 'x-access-token': adminToken })
+        .expect(400).end((err, res) => {
+          expect(res.body.message).to.equal('title cannot be null');
+        });
+      done();
     });
   });
 
-  it('Ensures the roles can only be retrieved by an admin', () => {
-    request.get('/api/role')
-      .set({ 'x-access-token': token })
-      .expect(200);
+  describe('Get roles', () => {
+    it('Should return all roles to an admin', (done) => {
+      request.get('/api/roles')
+        .set({ 'x-access-token': adminToken })
+        .expect(200).end((err, res) => {
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].title).to.equal('admin');
+          expect(res.body[1].title).to.equal('regular');
+          done();
+        });
+    });
+
+
+    it('Should return a specific role', (done) => {
+      request.get('/api/roles/1')
+        .set({ 'x-access-token': adminToken })
+        .expect(200).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.title).to.equal('admin');
+          expect(res.body.id).to.equal(1);
+          done();
+        });
+    });
+
+    it('Should fail if a role does not exist', (done) => {
+      request.get('/api/roles/5')
+        .set({ 'x-access-token': adminToken })
+        .expect(404).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          done();
+        });
+    });
   });
 
-  it('Should have atleast an admin and a regular role', () => {
-    const role2 = db.Role.build(roleHelper);
-    role2.title = 'regular';
-    expect(role.title).to.equal('admin');
-    expect(role2.title).to.equal('regular');
+  describe('Update role', () => {
+    it('Should edit and update role', (done) => {
+      request.put('/api/roles/3')
+        .set({ 'x-access-token': adminToken })
+        .send({ title: 'updated role' })
+        .expect(201)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.title).to.equal('updated role');
+          expect(res.body.id).to.equal(3);
+          done();
+        });
+    });
+
+    it('Should fail if a role does not exist', (done) => {
+      request.put('/api/roles/10')
+        .set({ 'x-access-token': adminToken })
+        .send({ title: 'updated role' })
+        .expect(404)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message).to.equal('Cannot edit a role that does not exist');
+          done();
+        });
+    });
   });
 
-  it('Ensures the required title field is not empty', () => {
-    role.title = null;
+  describe('Delete role', () => {
+    it('Should delete a role', (done) => {
+      request.delete('/api/roles/3')
+        .set({ 'x-access-token': adminToken })
+        .expect(202).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message).to.equal('Role deleted.');
+          done();
+        });
+    });
 
-    return role.save()
-        .then(newRole => expect(newRole).not.to.exist)
-        .catch(error =>
-          expect(/notNull/.test(error.message)).to.be.true);
+
+    it('Should fail if a role does not exist', (done) => {
+      request.delete('/api/roles/10')
+        .set({ 'x-access-token': adminToken })
+        .expect(404).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message).to.equal('Cannot delete a role that does not exist');
+          done();
+        });
+    });
   });
 });
