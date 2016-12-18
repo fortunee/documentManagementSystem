@@ -202,11 +202,12 @@ describe('Document', () => {
 
   describe('Search', () => {
     it('Should be based on a search criteria', (done) => {
-      request.get('/api/documents/?access=role')
+      request.get('/api/documents/?access=public')
         .set({ 'x-access-token': testToken })
         .expect(200).end((err, res) => {
           if (err) return done(err);
           expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].access).to.equal('public');
           done();
         });
     });
