@@ -3,10 +3,10 @@ import bcrypt from 'bcrypt-nodejs';
 import db from '../app/models';
 
 /**
- * Seeder class to populate database with default data
- * @class Seeder
+ * SeedData class to populate database with default data
+ * @class SeedData
  */
-class Seeder {
+class SeedData {
   /**
    * Creates new instance of password helper
    * and setup models for use in class
@@ -24,13 +24,13 @@ class Seeder {
   init() {
     this.models.sequelize.sync({ force: true })
       .then(() => {
-        this.setUpRoles()
+        this.rolesData()
           .then(() => {
-            this.setUpUsers()
+            this.usersData()
               .then(() => {
-                this.setUpTypes()
+                this.typesData()
                 .then(() => {
-                  this.setUpDocuments()
+                  this.documentsData()
                     .catch((err) => {
                       // eslint-disable-next-line
                       console.log(err);
@@ -55,10 +55,10 @@ class Seeder {
 
   /**
    * Populates database with user data
-   * @method setUpUsers
-   * @returns {Void} No Return
+   * @method usersData
+   * @returns {Object} Created users
    */
-  setUpUsers() {
+  usersData() {
     const users = [{
       username: faker.internet.userName(),
       firstName: faker.name.firstName(),
@@ -92,7 +92,7 @@ class Seeder {
    * @method setupRoles
    * @returns {object} Promise
    */
-  setUpRoles() {
+  rolesData() {
     const roles = [{
       title: 'admin',
     },
@@ -104,11 +104,11 @@ class Seeder {
   }
 
   /**
-   * Populates database with default roles
-   * @method setupRoles
+   * Populates database with default types
+   * @method typesData
    * @returns {object} Promise
    */
-  setUpTypes() {
+  typesData() {
     const types = [{
       title: 'letter',
     },
@@ -121,10 +121,10 @@ class Seeder {
 
   /**
    * Populates database with default documents
-   * @method setUpDocuments
+   * @method documentsData
    * @returns {Object} Promise
    */
-  setUpDocuments() {
+  documentsData() {
     const docs = [
       {
         title: faker.company.catchPhrase(),
@@ -187,4 +187,4 @@ class Seeder {
   }
 }
 
-export default new Seeder().init();
+export default new SeedData().init();
