@@ -144,13 +144,14 @@ describe('Document', () => {
         });
     });
 
-    it('Should be limited to a specific number in query params', (done) => {
-      request.get('/api/documents/?limit=2')
+    it('Should be limited to a specific number and an offset', (done) => {
+      request.get('/api/documents/?limit=2&start=3')
         .set({ 'x-access-token': adminToken })
         .expect(200).end((err, res) => {
           if (err) return done(err);
           expect(Array.isArray(res.body)).to.equal(true);
           expect(res.body.length).to.equal(2);
+          expect(res.body[0].id).to.equal(4);
           done();
         });
     });
@@ -194,6 +195,51 @@ describe('Document', () => {
           expect(res.body).to.have.property('message');
           expect(res.body.message)
             .to.equal('Document with the id: 30 does not exit');
+          done();
+        });
+    });
+  });
+
+  describe('Search', () => {
+    it('Should be based on a search criteria', (done) => {
+      request.get('/api/documents/?access=role')
+        .set({ 'x-access-token': testToken })
+        .expect(200).end((err, res) => {
+          if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          done();
+        });
+    });
+
+    it('Should be limited by a specific number', (done) => {
+      request.get('/api/documents/?limit=4')
+        .set({ 'x-access-token': adminToken })
+        .expect(200).end((err, res) => {
+          if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body.length).to.equal(4);
+          done();
+        });
+    });
+
+    it('Should be ordered by published date', (done) => {
+      request.get('/api/documents/')
+        .set({ 'x-access-token': adminToken })
+        .expect(200).end((err, res) => {
+          if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].id).not.to.equal(1);
+          done();
+        });
+    });
+
+    it('Should have been created by a specified role', (done) => {
+      request.get('/api/documents/')
+        .set({ 'x-access-token': adminToken })
+        .expect(200).end((err, res) => {
+          if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].OwnerId).not.to.equal(null);
           done();
         });
     });

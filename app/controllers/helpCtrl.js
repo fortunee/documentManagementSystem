@@ -16,8 +16,10 @@ const helpCtrl = {
    */
   isAdmin(req, res) {
     db.Document.findAll({
-      offset: req.query.offset,
+      offset: req.query.start,
       limit: req.query.limit,
+      access: req.query.access,
+      type: req.query.type,
       order: '"createdAt" DESC',
     })
       .then((documents) => {
@@ -36,7 +38,9 @@ const helpCtrl = {
   isNotAdmin(req, res) {
     db.Document.findAll({
       offset: req.query.start || null,
-      limit: req.query.limit || null,
+      limit: req.query.limit,
+      access: req.query.access || null,
+      type: req.query.type || null,
       order: '"createdAt" DESC',
       where: db.Sequelize.or(
         { OwnerId: req.decoded.UserId },
