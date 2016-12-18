@@ -234,7 +234,7 @@ describe('Document', () => {
 
     it('Should fail if document does not exist', (done) => {
       request.delete('/api/documents/20')
-        .set({ 'x-access-token': adminToken })
+        .set({ 'x-access-token': regularToken })
         .expect(404)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');

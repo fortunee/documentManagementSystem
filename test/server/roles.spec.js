@@ -79,7 +79,8 @@ describe('Role', () => {
       request.post('/api/roles')
         .set({ 'x-access-token': adminToken })
         .expect(400).end((err, res) => {
-          expect(res.body.message).to.equal('title cannot be null');
+          if (err) return done(err);
+          expect(res.body[0].message).to.equal('title cannot be null');
         });
       done();
     });

@@ -69,8 +69,7 @@ describe('Type', () => {
         .send({ title: null })
         .expect(400)
         .end((err, res) => {
-          expect(res.body[0].message)
-            .to.equal('title cannot be null');
+          expect(res.body[0].message).to.equal('title cannot be null');
           done();
         });
     });
