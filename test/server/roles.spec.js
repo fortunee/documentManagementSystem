@@ -81,8 +81,8 @@ describe('Role', () => {
         .expect(400).end((err, res) => {
           if (err) return done(err);
           expect(res.body[0].message).to.equal('title cannot be null');
+          done();
         });
-      done();
     });
   });
 
