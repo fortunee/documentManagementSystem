@@ -20,7 +20,7 @@ const regularUser = helper.regularUser4;
 const testUser = helper.testUser2;
 
 /**
- * Declare token variables for test
+ * Declare document and token variables for test
  */
 let document, adminToken, regularToken, testToken;
 
