@@ -162,6 +162,15 @@ class Seeder {
         access: 'public',
         TypeId: 2
       },
+
+      {
+        id: 8,
+        title: faker.company.catchPhrase(),
+        content: faker.lorem.paragraph(),
+        OwnerId: 2,
+        access: 'role',
+        TypeId: 2
+      },
     ];
     return this.models.Document.bulkCreate(docs);
   }

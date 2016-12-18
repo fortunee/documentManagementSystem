@@ -116,6 +116,15 @@ describe('Document', () => {
         });
     });
 
+    it('Should return a role access document to a user with the same role', (done) => {
+      request.get('/api/documents/8')
+        .set({ 'x-access-token': testToken })
+        .expect(200).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          done();
+        });
+    });
+
     it('Should get all documents for a specific user', (done) => {
       request.get('/api/users/1/documents')
         .set({ 'x-access-token': regularToken })
