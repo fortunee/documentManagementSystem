@@ -135,6 +135,28 @@ describe('Document', () => {
         });
     });
 
+    it('Should be limited to a specific number in query params', (done) => {
+      request.get('/api/documents/?limit=2')
+        .set({ 'x-access-token': adminToken })
+        .expect(200).end((err, res) => {
+          if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body.length).to.equal(2);
+          done();
+        });
+    });
+
+    it('Should return documents starting from the most recent', (done) => {
+      request.get('/api/documents/')
+        .set({ 'x-access-token': adminToken })
+        .expect(200).end((err, res) => {
+          if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].id).not.to.equal(1);
+          done();
+        });
+    });
+
     it('Should not return all documents to a non admin', (done) => {
       request.get('/api/documents')
         .set({ 'x-access-token': regularToken })
