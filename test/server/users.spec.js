@@ -89,6 +89,7 @@ describe('User', () => {
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('token');
+          expect(res.body.token).not.to.equal(null);
           done();
         });
     });
@@ -101,6 +102,8 @@ describe('User', () => {
     .end((err, res) => {
       expect(typeof res.body).to.equal('object');
       expect(res.body).to.have.property('message');
+      expect(res.body.message)
+        .to.equal('Authentication failed due to invalid credentials.');
       done();
     });
   });
@@ -110,6 +113,7 @@ describe('User', () => {
       .end((err, res) => {
         expect(typeof res.body).to.equal('object');
         expect(res.body).to.have.property('message');
+        expect(res.body.message).to.equal('Successfully logged out.');
         done();
       });
   });
