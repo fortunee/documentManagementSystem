@@ -125,6 +125,8 @@ describe('Role', () => {
         .expect(404).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
+          expect(res.body.message)
+            .to.equal('Role with the id: 5 does not exit');
           done();
         });
     });
