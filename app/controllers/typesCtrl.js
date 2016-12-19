@@ -58,7 +58,7 @@ const typesCtrl = {
       .then((type) => {
         if (!type) {
           return res.status(404)
-            .send({ message: 'Cannot edit a role that does not exist' });
+            .send({ message: 'Cannot edit a type that does not exist' });
         }
 
         type.update(req.body)
@@ -79,7 +79,7 @@ const typesCtrl = {
       .then((type) => {
         if (!type) {
           return res.status(404)
-            .send({ message: 'Cannot delete a role that does not exist' });
+            .send({ message: 'Cannot delete a type that does not exist' });
         }
 
         type.destroy()

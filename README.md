@@ -65,3 +65,22 @@ Make a put request to `/api/types/:id`, with a valid token set in the head, and 
 **Delete Type**
 
 Make a delete request to `/api/types/:id`, with a valid token set in the head, and it will return a `202` response and a Type deleted message in the body.
+
+#### Documents
+It allows the admin user create roles using the roles endpoint.
+
+**Create Document**
+
+ Make a post request to `/api/documents` with a valid token with a unique `title` and `content` fields it should return a success response if the document is created successfully.
+
+**Get Document**
+
+Make a Get request to `/api/documents` with a valid token set in the head, then it returns `200 Ok` response with all available documents in the body.
+
+**Edit Document**
+
+Make a put request to `/api/documents/:id`, with a valid token set in the head, and a unique value for the title field and it will return a `201 Created` response and the updated document in the body.
+
+**Delete Document**
+
+Make a delete request to `/api/documents/:id`, with a valid token set in the head, and it will return a `202` response and a Document deleted message in the body.

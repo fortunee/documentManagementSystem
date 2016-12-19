@@ -5,17 +5,17 @@ import db from '../models';
 /**
  * Secret token for jsonwebtoken
  */
-const secret = process.env.SECRET_TOKEN || 'self love';
+const secret = process.env.SECRET || 'jump drop mobs kicking it in';
 
 const Authentication = {
 
   /**
    * verifyToken - Verifies if a token supplied or not is valid
    *
-   * @param  {object} req  Request object
-   * @param  {object} res  Response object
-   * @param  {function} next callback to the function
-   * @returns {object}      Response status
+   * @param  {Object} req  Request Object
+   * @param  {Object} res  Response Object
+   * @param  {Object} next
+   * @returns {Object} Response status
    */
   verifyToken(req, res, next) {
     const token = req.headers.authorization || req.headers['x-access-token'];
@@ -36,10 +36,10 @@ const Authentication = {
   /**
    * verifyAdmin - Verifies that the user role is supplied is an admin
    *
-   * @param  {object} req  Request object
-   * @param  {object} res  Response object
-   * @param  {function} next callback function
-   * @returns {object}      Response status
+   * @param  {Object} req  Request Object
+   * @param  {Object} res  Response Object
+   * @param  {Object} next
+   * @returns {Object} Response Object
    */
   verifyAdmin(req, res, next) {
     db.Role.findById(req.decoded.RoleId)
@@ -51,7 +51,6 @@ const Authentication = {
         }
       });
   }
-
 };
 
 module.exports = Authentication;
