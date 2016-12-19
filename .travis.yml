@@ -3,7 +3,7 @@ language: node_js
 node_js:
   - 6
 
-script: npm test
+script: npm run coveralls
 
 services:
   - postgresql
@@ -13,5 +13,5 @@ before_script:
   - dropdb --if-exists docmanapi_test && createdb docmanapi_test
   - NODE_ENV=test npm run test_db_migrate
 
-after_success:
-    - npm run coveralls
+# after_success:
+#     - npm run coveralls

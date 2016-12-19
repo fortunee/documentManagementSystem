@@ -4,3 +4,5 @@ npm-debug.log
 coverage/
 .env
 crap.js
+crappy.js
+yarn-error.log
