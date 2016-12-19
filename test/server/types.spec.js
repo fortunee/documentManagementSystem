@@ -110,6 +110,7 @@ describe('Type', () => {
         .expect(404).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
+          expect(res.body.message).to.equal('Type with the id: 5 does not exist');
           done();
         });
     });
@@ -120,7 +121,7 @@ describe('Type', () => {
       request.put('/api/types/3')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'updated type' })
-        .expect(201)
+        .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.title).to.equal('updated type');
