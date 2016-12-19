@@ -75,6 +75,7 @@ describe('Document', () => {
     it('Should fail to create a document without valid attributes', (done) => {
       request.post('/api/documents')
         .set({ 'x-access-token': adminToken })
+        .send({ title: null })
         .expect(400)
         .end((err, res) => {
           expect(res.body[0].message).to.equal('title cannot be null');
