@@ -75,7 +75,7 @@ describe('User', () => {
     it('Should create a unique user', (done) => {
       request.post('/api/users')
         .send(regularUser)
-        .expect(409)
+        .expect(400)
         .end((err, res) => {
           expect(/user with this email/.test(res.body.message)).to.equal(true);
           done();
