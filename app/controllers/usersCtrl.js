@@ -99,7 +99,7 @@ const userCtrl = {
     db.User.findOne({ where: { email: req.body.email } })
       .then((userExists) => {
         if (userExists) {
-          return res.status(409)
+          return res.status(400)
             .send({ message: `There's a user with this email: ${req.body.email}` });
         }
 
