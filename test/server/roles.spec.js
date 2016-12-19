@@ -9,7 +9,9 @@ import helper from '../specHelper';
  */
 const request = supertest.agent(app);
 
-/** Grab the expect method from chai */
+/**
+ * Grab the expect method from chai
+ */
 const expect = chai.expect;
 
 /**
@@ -48,6 +50,8 @@ describe('Role', () => {
         .expect(201)
         .end((err, res) => {
           if (err) return done(err);
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.title).to.equal('new role');
           done();
         });
     });
@@ -59,6 +63,8 @@ describe('Role', () => {
         .expect(400)
         .end((err, res) => {
           if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].message).to.equal('title must be unique');
           done();
         });
     });
@@ -70,6 +76,8 @@ describe('Role', () => {
         .expect(403)
         .end((err, res) => {
           if (err) return done(err);
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to.equal('Access forbidden, you are not an admin!');
           done();
         });
     });
@@ -77,7 +85,9 @@ describe('Role', () => {
     it('Should fail if a title is null', (done) => {
       request.post('/api/roles')
         .set({ 'x-access-token': adminToken })
-        .expect(400).end((err, res) => {
+        .send({ title: null })
+        .expect(400)
+        .end((err, res) => {
           if (err) return done(err);
           expect(res.body[0].message).to.equal('title cannot be null');
           done();
