@@ -1,5 +1,5 @@
 import db from '../models';
-import helpCtrl from './helpCtrl';
+import helpers from './helpers';
 
 
 const docsCtrl = {
@@ -14,9 +14,9 @@ const docsCtrl = {
     db.Role.findById(req.decoded.RoleId)
     .then((role) => {
       if (role.title === 'admin') {
-        helpCtrl.isAdmin(req, res);
+        helpers.isAdmin(req, res);
       } else {
-        helpCtrl.isNotAdmin(req, res);
+        helpers.isNotAdmin(req, res);
       }
     });
   },
