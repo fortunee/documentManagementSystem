@@ -74,7 +74,7 @@ const docsCtrl = {
            } else {
              if (document.access === 'private'
                  && document.OwnerId !== req.decoded.UserId) {
-               return res.status(404)
+               return res.status(403)
                  .send({ message: 'This is a private document' });
              }
              res.send(document);
@@ -98,7 +98,7 @@ const docsCtrl = {
         }
 
         if (document.OwnerId !== req.decoded.UserId) {
-          return res.status(404)
+          return res.status(403)
             .send({ message: 'You are not the owner of this document' });
         }
 

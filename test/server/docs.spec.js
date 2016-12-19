@@ -94,7 +94,7 @@ describe('Document', () => {
         });
     });
 
-    it('Should return a private document to its owner', (done) => {
+    it('Should return a private document only to its owner', (done) => {
       request.get('/api/documents/7')
         .set({ 'x-access-token': regularToken })
         .expect(200).end((err, res) => {
@@ -108,7 +108,7 @@ describe('Document', () => {
     it('Should not return a private document to another user', (done) => {
       request.get('/api/documents/7')
         .set({ 'x-access-token': testToken })
-        .expect(404).end((err, res) => {
+        .expect(403).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.message).to.equal('This is a private document');
           done();
@@ -120,6 +120,7 @@ describe('Document', () => {
         .set({ 'x-access-token': testToken })
         .expect(200).end((err, res) => {
           expect(typeof res.body).to.equal('object');
+          expect(res.body.access).to.equal('role');
           done();
         });
     });
