@@ -9,7 +9,9 @@ import helper from '../specHelper';
  */
 const request = supertest.agent(app);
 
-/** Grab the expect method from chai */
+/**
+ * Grab the expect method from chai
+ */
 const expect = chai.expect;
 
 /**
@@ -40,13 +42,15 @@ describe('Type', () => {
   });
 
   describe('Create type', () => {
-    it('Ensures an admin can create a new type', (done) => {
+    it('Should create a type for the document', (done) => {
       request.post('/api/types')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'new type' })
         .expect(201)
         .end((err, res) => {
           if (err) return done(err);
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.title).to.equal('new type');
           done();
         });
     });
@@ -58,6 +62,8 @@ describe('Type', () => {
         .expect(400)
         .end((err, res) => {
           if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].message).to.equal('title must be unique');
           done();
         });
     });
