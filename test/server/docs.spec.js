@@ -89,7 +89,6 @@ describe('Document', () => {
       request.post('/api/documents')
         .set({ 'x-access-token': regularToken })
         .send(helper.document2)
-        .expect(201)
         .end((err, res) => {
           done();
         });
