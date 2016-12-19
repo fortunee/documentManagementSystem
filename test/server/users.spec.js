@@ -9,7 +9,9 @@ import helper from '../specHelper';
  */
 const request = supertest.agent(app);
 
-/** Grab the expect method from chai */
+/**
+ * Grab the expect method from chai
+ */
 const expect = chai.expect;
 
 /**
@@ -21,9 +23,9 @@ const testUser = helper.testUser;
 
 
 /**
- * Initialize a user and a role for test
+ * Initialize a username and tokens for the tests
  */
-let user, adminToken, regularToken, regularUsername;
+let adminToken, regularToken, regularUsername;
 
 describe('User', () => {
   before((done) => {
@@ -65,6 +67,7 @@ describe('User', () => {
         .expect(400)
         .end((err, res) => {
           expect(typeof res.error).to.equal('object');
+          expect(/cannot be null/.test(res.error.text)).to.equal(true);
           done();
         });
     });
