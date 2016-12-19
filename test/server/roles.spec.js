@@ -133,11 +133,11 @@ describe('Role', () => {
   });
 
   describe('Update role', () => {
-    it('Should edit and update role', (done) => {
+    it('Should edit and update a role', (done) => {
       request.put('/api/roles/3')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'updated role' })
-        .expect(201)
+        .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.title).to.equal('updated role');
@@ -154,7 +154,8 @@ describe('Role', () => {
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
-          expect(res.body.message).to.equal('Cannot edit a role that does not exist');
+          expect(res.body.message)
+            .to.equal('Cannot edit a role that does not exist');
           done();
         });
     });
@@ -164,7 +165,7 @@ describe('Role', () => {
     it('Should delete a role', (done) => {
       request.delete('/api/roles/3')
         .set({ 'x-access-token': adminToken })
-        .expect(202).end((err, res) => {
+        .expect(200).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
           expect(res.body.message).to.equal('Role deleted.');
@@ -179,7 +180,8 @@ describe('Role', () => {
         .expect(404).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
-          expect(res.body.message).to.equal('Cannot delete a role that does not exist');
+          expect(res.body.message)
+            .to.equal('Cannot delete a role that does not exist');
           done();
         });
     });
