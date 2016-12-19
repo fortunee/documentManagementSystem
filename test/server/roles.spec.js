@@ -28,7 +28,6 @@ describe('Role', () => {
   before((done) => {
     request.post('/api/users')
       .send(adminUser)
-      .expect(201)
       .end((err, res) => {
         adminToken = res.body.token;
       });
