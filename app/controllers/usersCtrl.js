@@ -29,7 +29,7 @@ const allUserFields = (user) => {
 /**
  * Users controller
  */
-const userCtrl = {
+const UsersCtrl = {
 
   /**
    * Login a user
@@ -182,4 +182,4 @@ const userCtrl = {
   }
 };
 
-module.exports = userCtrl;
+export default UsersCtrl;

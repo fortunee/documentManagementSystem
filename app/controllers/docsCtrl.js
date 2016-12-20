@@ -2,7 +2,7 @@ import db from '../models';
 import helpers from './helpers';
 
 
-const docsCtrl = {
+const DocsCtrl = {
 
   /**
    * Gets all documents depending on who is requesting
@@ -134,4 +134,4 @@ const docsCtrl = {
   }
 };
 
-module.exports = docsCtrl;
+export default DocsCtrl;
