@@ -202,7 +202,11 @@ describe('User', () => {
     it('Should edit and update a user', (done) => {
       request.put(`/api/users/${regularUsername}`)
         .set({ 'x-access-token': regularToken })
-        .send({ firstName: 'John', lastName: 'Doe' })
+        .send({
+          firstName: 'John',
+          lastName: 'Doe',
+          password: 'newpassword'
+        })
         .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
@@ -225,6 +229,18 @@ describe('User', () => {
   });
 
   describe('Delete a user', () => {
+    it('Should fail to delete a user by a different user', (done) => {
+      request.delete(`/api/users/${regularUsername}`)
+        .set({ 'x-access-token': adminToken })
+        .expect(403)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message)
+            .to.equal('Oops! you cant delete someone else');
+          done();
+        });
+    });
+
     it('Should find and delete a user', (done) => {
       request.delete(`/api/users/${regularUsername}`)
         .set({ 'x-access-token': regularToken })

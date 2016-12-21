@@ -176,6 +176,11 @@ const UsersCtrl = {
             .send({ message: 'Cannot delete a user that does not exist' });
         }
 
+        if (user.id !== req.decoded.UserId) {
+          return res.status(403)
+            .send({ message: 'Oops! you cant delete someone else' });
+        }
+
         user.destroy()
           .then(() => res.send({ message: 'User deleted.' }));
       });
