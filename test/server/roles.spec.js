@@ -107,7 +107,6 @@ describe('Role', () => {
         });
     });
 
-
     it('Should return a specific role', (done) => {
       request.get('/api/roles/1')
         .set({ 'x-access-token': adminToken })
@@ -172,7 +171,6 @@ describe('Role', () => {
           done();
         });
     });
-
 
     it('Should fail if a role does not exist', (done) => {
       request.delete('/api/roles/10')
