@@ -20,6 +20,7 @@ const expect = chai.expect;
 const adminUser = helper.adminUser;
 const regularUser = helper.regularUser;
 const testUser = helper.testUser;
+const testUser2 = helper.testUser3;
 
 /**
  * Initialize a username and tokens for the tests
@@ -77,6 +78,17 @@ describe('User', () => {
         .expect(409)
         .end((err, res) => {
           expect(/There's a user with this email/.test(res.body.message)).to.equal(true);
+          done();
+        });
+    });
+
+    it('Should have a new role set regular by default', (done) => {
+      request.post('/api/users')
+        .send(testUser2)
+        .expect(201)
+        .end((err, res) => {
+          expect(res.body.user).to.have.property('RoleId');
+          expect(res.body.user.RoleId).to.equal(2);
           done();
         });
     });

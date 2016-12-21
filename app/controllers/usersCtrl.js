@@ -100,9 +100,12 @@ const UsersCtrl = {
             .send({ message: `There's a user with this email: ${req.body.email}` });
         }
 
+        if (!req.body.RoleId) {
+          req.body.RoleId = 2;
+        }
+
         db.User.create(req.body)
           .then((user) => {
-            // user.RoleId = 2;
             const token = jwt.sign({
               UserId: user.id,
               RoleId: user.RoleId

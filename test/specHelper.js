@@ -58,8 +58,7 @@ module.exports = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
-    RoleId: 2
+    password: faker.internet.password()
   },
 
   regularUser2: {
@@ -67,8 +66,7 @@ module.exports = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
-    RoleId: 2
+    password: faker.internet.password()
   },
 
   regularUser3: {
@@ -76,8 +74,7 @@ module.exports = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
-    RoleId: 2
+    password: faker.internet.password()
   },
 
   regularUser4: {
@@ -85,17 +82,7 @@ module.exports = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
-    RoleId: 2
-  },
-
-  regularUser5: {
-    username: faker.internet.userName(),
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    RoleId: 2
+    password: faker.internet.password()
   },
 
   testUser: {
@@ -103,8 +90,7 @@ module.exports = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
-    RoleId: 2
+    password: faker.internet.password()
   },
 
   testUser2: {
@@ -112,8 +98,15 @@ module.exports = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
-    RoleId: 2
+    password: faker.internet.password()
+  },
+
+  testUser3: {
+    username: faker.internet.userName(),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    password: faker.internet.password()
   },
 
   document: {
