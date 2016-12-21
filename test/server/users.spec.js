@@ -133,6 +133,19 @@ describe('User', () => {
         });
     });
 
+    it('Should fail to return all users to a non admin', (done) => {
+      request.get('/api/users')
+        .set({ 'x-access-token': regularToken })
+        .expect(403)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message)
+            .to.equal('Access forbidden, you are not an admin!');
+          done();
+        });
+    });
+
     it('Should return a specific user', (done) => {
       request.get(`/api/users/${regularUsername}`)
         .set({ 'x-access-token': adminToken })
