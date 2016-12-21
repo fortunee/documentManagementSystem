@@ -222,19 +222,6 @@ describe('User', () => {
           done();
         });
     });
-
-    it('Should hash updated password', (done) => {
-      request.put(`/api/users/${regularUsername}`)
-        .set({ 'x-access-token': regularToken })
-        .send({ password: 'newpassword' })
-        .expect(200)
-        .end((err, res) => {
-          if (err) return done(err);
-          expect(typeof res.body).to.equal('object');
-          expect(res.body.username).to.equal(regularUsername);
-          done();
-        });
-    });
   });
 
   describe('Delete a user', () => {
