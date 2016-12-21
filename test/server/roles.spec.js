@@ -155,6 +155,20 @@ describe('Role', () => {
         });
     });
 
+    it('Should fail to edit and update a role by a non admin', (done) => {
+      request.put('/api/roles/3')
+        .set({ 'x-access-token': regularToken })
+        .send({ title: 'updated role' })
+        .expect(403)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message)
+            .to.equal('Access forbidden, you are not an admin!');
+          done();
+        });
+    });
+
     it('Should fail if a role does not exist', (done) => {
       request.put('/api/roles/10')
         .set({ 'x-access-token': adminToken })
