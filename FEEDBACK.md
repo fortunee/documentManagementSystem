@@ -22,3 +22,5 @@
 - Line 108 of UsersCtrl has a commentted out code
 
 - Line 238 to 247 of document spec should expect that a document's Owner has RoleId which is not equal to null.
+
+- Ensure all documents are actually returned to an admin, by making a comparison with the number of documents in the db.

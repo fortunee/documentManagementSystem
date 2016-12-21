@@ -139,7 +139,8 @@ describe('Document', () => {
       request.get('/api/documents')
         .set({ 'x-access-token': adminToken })
         .expect(200).end((err, res) => {
-          expect(typeof res.body).to.equal('object');
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body.length).to.equal(8);
           done();
         });
     });
@@ -172,6 +173,7 @@ describe('Document', () => {
         .set({ 'x-access-token': regularToken })
         .expect(200).end((err, res) => {
           expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body.length).not.to.equal(8);
           done();
         });
     });
