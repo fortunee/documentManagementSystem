@@ -18,6 +18,15 @@ const Helpers = {
       access: req.query.access,
       type: req.query.type,
       order: '"createdAt" DESC',
+      include: [
+        {
+          as: 'Owner',
+          model: db.User,
+          attributes: [
+            'RoleId'
+          ]
+        }
+      ]
     })
       .then((documents) => {
         res.send(documents);

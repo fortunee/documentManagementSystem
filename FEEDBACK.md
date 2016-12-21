@@ -20,3 +20,5 @@
 - Watchout for double line spacing in your entire codebase.
 
 - Line 108 of UsersCtrl has a commentted out code
+
+- Line 238 to 247 of document spec should expect that a document's Owner has RoleId which is not equal to null.

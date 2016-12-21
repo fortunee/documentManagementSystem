@@ -240,7 +240,7 @@ describe('Document', () => {
         .expect(200).end((err, res) => {
           if (err) return done(err);
           expect(Array.isArray(res.body)).to.equal(true);
-          expect(res.body[0].OwnerId).not.to.equal(null);
+          expect(res.body[0].Owner.RoleId).not.to.equal(null);
           done();
         });
     });
