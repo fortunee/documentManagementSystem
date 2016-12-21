@@ -9,7 +9,7 @@
 
 - Test that a user cannot be deleted by a different user.
 
-- Line 63 of roles.spec expect a 409 status code for a conflict or duplicate data.
+- Expect a 409 status code for a conflict or duplicate data.
 
 - Use a single space on line 109 and 110 of your roles.spec.
 

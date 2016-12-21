@@ -19,7 +19,6 @@ const expect = chai.expect;
  */
 const adminUser = helper.adminUser2;
 const regularUser = helper.regularUser2;
-const testUser = helper.testUser;
 
 /**
  * Declare token variables for test
@@ -60,7 +59,6 @@ describe('Role', () => {
       request.post('/api/roles')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'new role' })
-        .expect(409)
         .end((err, res) => {
           if (err) return done(err);
           expect(Array.isArray(res.body)).to.equal(true);
