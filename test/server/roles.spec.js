@@ -155,7 +155,7 @@ describe('Role', () => {
         });
     });
 
-    it('Should fail to edit and update a role by a non admin', (done) => {
+    it('Should fail to update a role by a non admin', (done) => {
       request.put('/api/roles/3')
         .set({ 'x-access-token': regularToken })
         .send({ title: 'updated role' })
@@ -185,6 +185,19 @@ describe('Role', () => {
   });
 
   describe('Delete role', () => {
+    it('Should fail to delete a role by a non admin', (done) => {
+      request.delete('/api/roles/3')
+        .set({ 'x-access-token': regularToken })
+        .expect(403)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message)
+            .to.equal('Access forbidden, you are not an admin!');
+          done();
+        });
+    });
+
     it('Should delete a role', (done) => {
       request.delete('/api/roles/3')
         .set({ 'x-access-token': adminToken })
