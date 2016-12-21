@@ -21,7 +21,6 @@ const adminUser = helper.adminUser;
 const regularUser = helper.regularUser;
 const testUser = helper.testUser;
 
-
 /**
  * Initialize a username and tokens for the tests
  */
@@ -75,9 +74,9 @@ describe('User', () => {
     it('Should create a unique user', (done) => {
       request.post('/api/users')
         .send(regularUser)
-        .expect(400)
+        .expect(409)
         .end((err, res) => {
-          expect(/user with this email/.test(res.body.message)).to.equal(true);
+          expect(/There's a user with this email/.test(res.body.message)).to.equal(true);
           done();
         });
     });
