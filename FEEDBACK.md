@@ -17,6 +17,6 @@
 
 - Expect an array to be returned on line 175 of docs.spec.
 
-- Watchout for spaces in your entire codebase.
+- Watchout for double line spacing in your entire codebase.
 
 - Line 108 of UsersCtrl has a commentted out code

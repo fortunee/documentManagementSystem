@@ -60,7 +60,7 @@ describe('Role', () => {
       request.post('/api/roles')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'new role' })
-        .expect(400)
+        .expect(409)
         .end((err, res) => {
           if (err) return done(err);
           expect(Array.isArray(res.body)).to.equal(true);
