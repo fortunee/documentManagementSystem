@@ -1,6 +1,6 @@
 import db from '../models';
 
-const typesCtrl = {
+const TypesCtrl = {
   /**
    * Grab all types (ie. document types)
    * @param {Object} req Request object
@@ -89,4 +89,4 @@ const typesCtrl = {
 
 };
 
-module.exports = typesCtrl;
+export default TypesCtrl;

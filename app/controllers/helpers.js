@@ -4,7 +4,7 @@ import db from '../models';
 /**
  * controllers helper functions
  */
-const helpCtrl = {
+const Helpers = {
 
 
   /**
@@ -74,4 +74,4 @@ const helpCtrl = {
 
 };
 
-module.exports = helpCtrl;
+export default Helpers;

@@ -1,8 +1,8 @@
 import db from '../models';
-import helpCtrl from './helpCtrl';
+import helpers from './helpers';
 
 
-const docsCtrl = {
+const DocsCtrl = {
 
   /**
    * Gets all documents depending on who is requesting
@@ -14,9 +14,9 @@ const docsCtrl = {
     db.Role.findById(req.decoded.RoleId)
     .then((role) => {
       if (role.title === 'admin') {
-        helpCtrl.isAdmin(req, res);
+        helpers.isAdmin(req, res);
       } else {
-        helpCtrl.isNotAdmin(req, res);
+        helpers.isNotAdmin(req, res);
       }
     });
   },
@@ -74,7 +74,7 @@ const docsCtrl = {
            } else {
              if (document.access === 'private'
                  && document.OwnerId !== req.decoded.UserId) {
-               return res.status(404)
+               return res.status(403)
                  .send({ message: 'This is a private document' });
              }
              res.send(document);
@@ -98,7 +98,7 @@ const docsCtrl = {
         }
 
         if (document.OwnerId !== req.decoded.UserId) {
-          return res.status(404)
+          return res.status(403)
             .send({ message: 'You are not the owner of this document' });
         }
 
@@ -134,4 +134,4 @@ const docsCtrl = {
   }
 };
 
-module.exports = docsCtrl;
+export default DocsCtrl;

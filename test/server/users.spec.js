@@ -9,7 +9,9 @@ import helper from '../specHelper';
  */
 const request = supertest.agent(app);
 
-/** Grab the expect method from chai */
+/**
+ * Grab the expect method from chai
+ */
 const expect = chai.expect;
 
 /**
@@ -21,15 +23,14 @@ const testUser = helper.testUser;
 
 
 /**
- * Initialize a user and a role for test
+ * Initialize a username and tokens for the tests
  */
-let user, adminToken, regularToken, regularUsername;
+let adminToken, regularToken, regularUsername;
 
 describe('User', () => {
   before((done) => {
     request.post('/api/users')
       .send(adminUser)
-      .expect(201)
       .end((err, res) => {
         adminToken = res.body.token;
       });
@@ -66,6 +67,7 @@ describe('User', () => {
         .expect(400)
         .end((err, res) => {
           expect(typeof res.error).to.equal('object');
+          expect(/cannot be null/.test(res.error.text)).to.equal(true);
           done();
         });
     });
@@ -73,7 +75,7 @@ describe('User', () => {
     it('Should create a unique user', (done) => {
       request.post('/api/users')
         .send(regularUser)
-        .expect(409)
+        .expect(400)
         .end((err, res) => {
           expect(/user with this email/.test(res.body.message)).to.equal(true);
           done();
@@ -87,6 +89,7 @@ describe('User', () => {
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('token');
+          expect(res.body.token).not.to.equal(null);
           done();
         });
     });
@@ -99,6 +102,8 @@ describe('User', () => {
     .end((err, res) => {
       expect(typeof res.body).to.equal('object');
       expect(res.body).to.have.property('message');
+      expect(res.body.message)
+        .to.equal('Authentication failed due to invalid credentials.');
       done();
     });
   });
@@ -108,6 +113,7 @@ describe('User', () => {
       .end((err, res) => {
         expect(typeof res.body).to.equal('object');
         expect(res.body).to.have.property('message');
+        expect(res.body.message).to.equal('Successfully logged out.');
         done();
       });
   });
@@ -116,8 +122,14 @@ describe('User', () => {
     it('Should return all users to an admin', (done) => {
       request.get('/api/users')
         .set({ 'x-access-token': adminToken })
+        .expect(200)
         .end((err, res) => {
           expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0]).to.have.property('id');
+          expect(res.body[0]).to.have.property('firstName');
+          expect(res.body[0]).to.have.property('lastName');
+          expect(res.body[0]).to.have.property('username');
+          expect(res.body[0]).to.have.property('email');
           done();
         });
     });
@@ -128,6 +140,10 @@ describe('User', () => {
         .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
+          expect(res.body.username).to.equal(regularUsername);
+          expect(res.body.email).to.equal(regularUser.email);
+          expect(res.body.firstName).to.equal(regularUser.firstName);
+          expect(res.body.lastName).to.equal(regularUser.lastName);
           done();
         });
     });
@@ -137,13 +153,15 @@ describe('User', () => {
         .set({ 'x-access-token': adminToken })
         .expect(404)
         .end((err, res) => {
-          expect(typeof res.error).to.equal('object');
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message)
+            .to.equal('User with username: notexist does not exist');
           done();
         });
     });
 
     it('Should fail if a token is invalid', (done) => {
-      request.get('/api/users/notexist')
+      request.get(`/api/users/${regularUsername}`)
         .set({ 'x-access-token': 'invalid token' })
         .expect(401)
         .end((err, res) => {
@@ -173,7 +191,7 @@ describe('User', () => {
       request.put(`/api/users/${regularUsername}`)
         .set({ 'x-access-token': regularToken })
         .send({ firstName: 'John', lastName: 'Doe' })
-        .expect(201)
+        .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.firstName).to.equal('John');
@@ -182,12 +200,13 @@ describe('User', () => {
         });
     });
 
-    it('Should fail to delete a user that does not exist', (done) => {
+    it('Should fail to update a user that does not exist', (done) => {
       request.put('/api/users/notexist')
         .set({ 'x-access-token': regularToken })
         .expect(404)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to.equal('Cannot edit a user that does not exist');
           done();
         });
     });
@@ -210,9 +229,10 @@ describe('User', () => {
     it('Should find and delete a user', (done) => {
       request.delete(`/api/users/${regularUsername}`)
         .set({ 'x-access-token': regularToken })
-        .expect(202)
+        .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to.equal('User deleted.');
           done();
         });
     });
@@ -223,6 +243,8 @@ describe('User', () => {
         .expect(404)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
+          expect(res.body.message)
+            .to.equal('Cannot delete a user that does not exist');
           done();
         });
     });

@@ -9,7 +9,9 @@ import helper from '../specHelper';
  */
 const request = supertest.agent(app);
 
-/** Grab the expect method from chai */
+/**
+ * Grab the expect method from chai
+ */
 const expect = chai.expect;
 
 /**
@@ -27,7 +29,6 @@ describe('Type', () => {
   before((done) => {
     request.post('/api/users')
       .send(adminUser)
-      .expect(201)
       .end((err, res) => {
         adminToken = res.body.token;
       });
@@ -41,13 +42,15 @@ describe('Type', () => {
   });
 
   describe('Create type', () => {
-    it('Ensures an admin can create a new type', (done) => {
+    it('Should create a type for the document', (done) => {
       request.post('/api/types')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'new type' })
         .expect(201)
         .end((err, res) => {
           if (err) return done(err);
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.title).to.equal('new type');
           done();
         });
     });
@@ -59,6 +62,8 @@ describe('Type', () => {
         .expect(400)
         .end((err, res) => {
           if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].message).to.equal('title must be unique');
           done();
         });
     });
@@ -105,6 +110,7 @@ describe('Type', () => {
         .expect(404).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
+          expect(res.body.message).to.equal('Type with the id: 5 does not exist');
           done();
         });
     });
@@ -115,7 +121,7 @@ describe('Type', () => {
       request.put('/api/types/3')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'updated type' })
-        .expect(201)
+        .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.title).to.equal('updated type');

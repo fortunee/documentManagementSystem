@@ -9,7 +9,9 @@ import helper from '../specHelper';
  */
 const request = supertest.agent(app);
 
-/** Grab the expect method from chai */
+/**
+ * Grab the expect method from chai
+ */
 const expect = chai.expect;
 
 /**
@@ -28,7 +30,6 @@ describe('Role', () => {
   before((done) => {
     request.post('/api/users')
       .send(adminUser)
-      .expect(201)
       .end((err, res) => {
         adminToken = res.body.token;
       });
@@ -49,6 +50,8 @@ describe('Role', () => {
         .expect(201)
         .end((err, res) => {
           if (err) return done(err);
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.title).to.equal('new role');
           done();
         });
     });
@@ -60,6 +63,8 @@ describe('Role', () => {
         .expect(400)
         .end((err, res) => {
           if (err) return done(err);
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].message).to.equal('title must be unique');
           done();
         });
     });
@@ -71,6 +76,8 @@ describe('Role', () => {
         .expect(403)
         .end((err, res) => {
           if (err) return done(err);
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to.equal('Access forbidden, you are not an admin!');
           done();
         });
     });
@@ -78,7 +85,9 @@ describe('Role', () => {
     it('Should fail if a title is null', (done) => {
       request.post('/api/roles')
         .set({ 'x-access-token': adminToken })
-        .expect(400).end((err, res) => {
+        .send({ title: null })
+        .expect(400)
+        .end((err, res) => {
           if (err) return done(err);
           expect(res.body[0].message).to.equal('title cannot be null');
           done();
@@ -116,17 +125,19 @@ describe('Role', () => {
         .expect(404).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
+          expect(res.body.message)
+            .to.equal('Role with the id: 5 does not exit');
           done();
         });
     });
   });
 
   describe('Update role', () => {
-    it('Should edit and update role', (done) => {
+    it('Should edit and update a role', (done) => {
       request.put('/api/roles/3')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'updated role' })
-        .expect(201)
+        .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.title).to.equal('updated role');
@@ -143,7 +154,8 @@ describe('Role', () => {
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
-          expect(res.body.message).to.equal('Cannot edit a role that does not exist');
+          expect(res.body.message)
+            .to.equal('Cannot edit a role that does not exist');
           done();
         });
     });
@@ -153,7 +165,7 @@ describe('Role', () => {
     it('Should delete a role', (done) => {
       request.delete('/api/roles/3')
         .set({ 'x-access-token': adminToken })
-        .expect(202).end((err, res) => {
+        .expect(200).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
           expect(res.body.message).to.equal('Role deleted.');
@@ -168,7 +180,8 @@ describe('Role', () => {
         .expect(404).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
-          expect(res.body.message).to.equal('Cannot delete a role that does not exist');
+          expect(res.body.message)
+            .to.equal('Cannot delete a role that does not exist');
           done();
         });
     });

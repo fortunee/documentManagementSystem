@@ -29,7 +29,6 @@ describe('Document', () => {
   before((done) => {
     request.post('/api/users')
       .send(adminUser)
-      .expect(201)
       .end((err, res) => {
         adminToken = res.body.token;
       });
@@ -76,6 +75,7 @@ describe('Document', () => {
     it('Should fail to create a document without valid attributes', (done) => {
       request.post('/api/documents')
         .set({ 'x-access-token': adminToken })
+        .send({ title: null })
         .expect(400)
         .end((err, res) => {
           expect(res.body[0].message).to.equal('title cannot be null');
@@ -89,13 +89,12 @@ describe('Document', () => {
       request.post('/api/documents')
         .set({ 'x-access-token': regularToken })
         .send(helper.document2)
-        .expect(201)
         .end((err, res) => {
           done();
         });
     });
 
-    it('Should return a private document to its owner', (done) => {
+    it('Should return a private document only to its owner', (done) => {
       request.get('/api/documents/7')
         .set({ 'x-access-token': regularToken })
         .expect(200).end((err, res) => {
@@ -109,7 +108,7 @@ describe('Document', () => {
     it('Should not return a private document to another user', (done) => {
       request.get('/api/documents/7')
         .set({ 'x-access-token': testToken })
-        .expect(404).end((err, res) => {
+        .expect(403).end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.message).to.equal('This is a private document');
           done();
@@ -121,6 +120,7 @@ describe('Document', () => {
         .set({ 'x-access-token': testToken })
         .expect(200).end((err, res) => {
           expect(typeof res.body).to.equal('object');
+          expect(res.body.access).to.equal('role');
           done();
         });
     });
@@ -131,6 +131,7 @@ describe('Document', () => {
         .expect(200).end((err, res) => {
           if (err) return done(err);
           expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body[0].OwnerId).to.equal(1);
           done();
         });
     });
@@ -251,7 +252,7 @@ describe('Document', () => {
       request.put('/api/documents/6')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'doc title updated' })
-        .expect(201)
+        .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.title).to.equal('doc title updated');
@@ -263,7 +264,7 @@ describe('Document', () => {
       request.put('/api/documents/6')
         .set({ 'x-access-token': testToken })
         .send({ title: 'doc title updated' })
-        .expect(404)
+        .expect(403)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.message)
@@ -290,7 +291,7 @@ describe('Document', () => {
     it('Should delete a document', (done) => {
       request.delete('/api/documents/6')
         .set({ 'x-access-token': adminToken })
-        .expect(202)
+        .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.message).to.equal('Document deleted.');

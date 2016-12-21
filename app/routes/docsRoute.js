@@ -1,32 +1,32 @@
 /**
  * Import documents controllers and authentication middlewares.
  */
-import docsCtrl from '../../app/controllers/docsCtrl';
+import DocsCtrl from '../../app/controllers/docsCtrl';
 import Authentication from '../../app/middlewares/auth';
 
-const docRoute = (router) => {
+const docsRoute = (router) => {
   /**
    *   Get all documents or create a new document
    */
   router.route('/documents')
-    .get(Authentication.verifyToken, docsCtrl.allDocs)
-    .post(Authentication.verifyToken, docsCtrl.createDoc);
+    .get(Authentication.verifyToken, DocsCtrl.allDocs)
+    .post(Authentication.verifyToken, DocsCtrl.createDoc);
 
 
   /**
    * Get, Update and delete a specific document
    */
   router.route('/documents/:id')
-    .get(Authentication.verifyToken, docsCtrl.getDoc)
-    .put(Authentication.verifyToken, docsCtrl.editDoc)
-    .delete(Authentication.verifyToken, docsCtrl.deleteDoc);
+    .get(Authentication.verifyToken, DocsCtrl.getDoc)
+    .put(Authentication.verifyToken, DocsCtrl.editDoc)
+    .delete(Authentication.verifyToken, DocsCtrl.deleteDoc);
 
 
   /**
    * Get all documents belonging to a specific user.
    */
   router.route('/users/:id/documents')
-    .get(Authentication.verifyToken, docsCtrl.getUserDocuments);
+    .get(Authentication.verifyToken, DocsCtrl.getUserDocuments);
 };
 
-export default docRoute;
+export default docsRoute;

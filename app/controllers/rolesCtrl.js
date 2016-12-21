@@ -1,6 +1,6 @@
 import db from '../models';
 
-const rolesCtrl = {
+const RolesCtrl = {
   /**
    * Grab all the roles in the db
    * @param {Object} req - Request object
@@ -89,4 +89,4 @@ const rolesCtrl = {
 
 };
 
-module.exports = rolesCtrl;
+export default RolesCtrl;
