@@ -4,7 +4,6 @@
 import TypesCtrl from '../../app/controllers/typesCtrl';
 import Authentication from '../../app/middlewares/auth';
 
-
 const typesRoute = (router) => {
   router.route('/types')
     .get(Authentication.verifyToken, TypesCtrl.allTypes)

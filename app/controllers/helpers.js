@@ -1,12 +1,9 @@
 import db from '../models';
 
-
 /**
  * controllers helper functions
  */
 const Helpers = {
-
-
   /**
    * isAdmin - This returns all documents
    *
@@ -26,7 +23,6 @@ const Helpers = {
         res.send(documents);
       });
   },
-
 
   /**
    * isNotAdmin - This returns the documents that match the criteria
@@ -71,7 +67,6 @@ const Helpers = {
       );
     });
   }
-
 };
 
 export default Helpers;

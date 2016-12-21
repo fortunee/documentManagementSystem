@@ -3,7 +3,6 @@ import db from '../models';
 
 const secret = process.env.SECRET || 'jump drop mobs kicking it in';
 
-
 /**
  * All user fields and set values to the
  * specific fields
@@ -24,7 +23,6 @@ const allUserFields = (user) => {
 
   return fields;
 };
-
 
 /**
  * Users controller
@@ -53,7 +51,6 @@ const UsersCtrl = {
         }
       });
   },
-
 
   /**
    * logout - Logout a user

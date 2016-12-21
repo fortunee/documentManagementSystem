@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import db from '../models';
 
-
 /**
  * Secret token for jsonwebtoken
  */
@@ -32,7 +31,6 @@ const Authentication = {
     });
   },
 
-
   /**
    * verifyAdmin - Verifies that the user role is supplied is an admin
    *
@@ -53,4 +51,4 @@ const Authentication = {
   }
 };
 
-module.exports = Authentication;
+export default Authentication;

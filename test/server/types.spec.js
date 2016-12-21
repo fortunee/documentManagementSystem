@@ -92,7 +92,6 @@ describe('Type', () => {
         });
     });
 
-
     it('Should return a specific type', (done) => {
       request.get('/api/types/1')
         .set({ 'x-access-token': regularToken })
@@ -156,7 +155,6 @@ describe('Type', () => {
           done();
         });
     });
-
 
     it('Should fail if a type does not exist', (done) => {
       request.delete('/api/types/10')

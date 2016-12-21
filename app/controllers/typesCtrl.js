@@ -86,7 +86,6 @@ const TypesCtrl = {
           .then(() => res.send({ message: 'Type deleted.' }));
       });
   }
-
 };
 
 export default TypesCtrl;

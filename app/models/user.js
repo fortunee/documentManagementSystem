@@ -1,5 +1,4 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_changed"] }]*/
-
 import bcrypt from 'bcrypt-nodejs';
 
 module.exports = (sequelize, DataTypes) => {

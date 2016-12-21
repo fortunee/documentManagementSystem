@@ -162,7 +162,6 @@ class SeedData {
         access: 'public',
         TypeId: 2
       },
-
       {
         id: 8,
         title: faker.company.catchPhrase(),
@@ -174,7 +173,6 @@ class SeedData {
     ];
     return this.models.Document.bulkCreate(docs);
   }
-
 
   /**
   * Generate a hash from a password string

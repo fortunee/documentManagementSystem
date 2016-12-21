@@ -24,7 +24,6 @@ const testUser = helper.testUser2;
  */
 let document, adminToken, regularToken, testToken;
 
-
 describe('Document', () => {
   before((done) => {
     request.post('/api/users')
@@ -172,7 +171,7 @@ describe('Document', () => {
       request.get('/api/documents')
         .set({ 'x-access-token': regularToken })
         .expect(200).end((err, res) => {
-          expect(typeof res.body).to.equal('object');
+          expect(Array.isArray(res.body)).to.equal(true);
           done();
         });
     });

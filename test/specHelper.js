@@ -4,17 +4,19 @@ if (process.env.NODE_ENV !== 'test') {
   process.exit(1);
 }
 
-
 module.exports = {
   role: {
     title: 'admin'
   },
+
   role2: {
     title: 'regular'
   },
+
   type: {
     title: 'letter'
   },
+
   adminUser: {
     username: faker.internet.userName(),
     firstName: faker.name.firstName(),
