@@ -62,10 +62,10 @@ Send data with valid `username`, `email`, `password`,  `firstName` and  `lastNam
 It returns a token and a few attributes of the created user.  
 
 ***To LOGIN a user***   
-Make a POST request to `/api/users/login` endpoint.
+Make a POST request to `/api/users/login` endpoint.   
 Send data with valid `email` and `password` attributes.
 
-***To LOGOUT a user***
+***To LOGOUT a user***   
 Make a POST request to `/api/users/logout` endpoint.
 
 ***To GET all users***  
