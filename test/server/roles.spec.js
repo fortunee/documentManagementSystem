@@ -108,7 +108,8 @@ describe('Role', () => {
     it('Should fail to return all roles to a non admin', (done) => {
       request.get('/api/roles')
         .set({ 'x-access-token': regularToken })
-        .expect(403).end((err, res) => {
+        .expect(403)
+        .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body).to.have.property('message');
           expect(res.body.message)
