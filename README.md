@@ -59,7 +59,7 @@ It allows only authenticated users to create, delete and update types.
 ***To CREATE a user***   
 Make a POST request to `/api/users` endpoint.  
 Send data with valid `username`, `email`, `password`,  `firstName` and  `lastName` attributes.   
-It returns a token and a few attributes of the created client.  
+It returns a token and a few attributes of the created user.  
 
 ***To LOGIN a user***   
 Make a POST request to `/api/users/login` endpoint.
