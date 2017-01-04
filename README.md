@@ -73,12 +73,12 @@ Make a GET request to `/api/users`
 Set an admin user's token in the authorization headers.  
 Use `set({ 'x-access-token': <token> })` or `set({ authorization: <token> })`
 
-###### _To GET a user_   
+#### _To GET a user_   
 Make a GET request to `/api/users/:username`   
 Pass `username` of the user in the url parameters.
 Set the user's token in the authorization headers.
 
-###### _To UPDATE or DELETE a user_  
+#### _To UPDATE or DELETE a user_  
 Make a PUT or DELETE request to `/api/users/:username`   
 Pass `username` of the user in the url parameters.    
 Set the user's token in the authorization headers.
@@ -86,22 +86,22 @@ Send a valid updated data on a PUT request.
 
 ### Roles Endpoint
 
-###### _To CREATE a role_   
+#### _To CREATE a role_   
 Make a POST request to `/api/roles` endpoint.  
 Set an admin user's token in the authorization headers.   
 Send data with valid `title` attributes.    
 
-###### _To GET all roles_  
+#### _To GET all roles_  
 Make a GET request to `/api/roles`  
 Set an admin user's token in the authorization headers.  
 Use `set({ 'x-access-token': <adminToken> })` or `set({ authorization: <adminToken> })`
 
-###### _To GET a role_   
+#### _To GET a role_   
 Make a GET request to `/api/roles/:id`  
 Pass `id` of the role in the url parameters.  
 Set the admin user's token in the authorization headers.
 
-###### _To UPDATE or DELETE a role_  
+#### _To UPDATE or DELETE a role_  
 Make a PUT or DELETE request to `/api/roles/:id`   
 Pass `id` of the role in the url parameters.  
 Set the admin user's token in the authorization headers.   
@@ -109,22 +109,22 @@ Send a valid updated data on a PUT request.
 
 ### Documents Endpoint
 
-###### _To CREATE a document_   
+#### _To CREATE a document_   
 Make a POST request to `/api/documents` endpoint.  
 Set a user's token in the authorization headers.   
 Send data with valid `title` attributes.    
 
-###### _To GET all documents_  
+#### _To GET all documents_  
 Make a GET request to `/api/documents`  
 Set a user's token in the authorization headers.  
 Use `set({ 'x-access-token': <token> })` or `set({ authorization: <token> })`
 
-###### _To GET a document_   
+#### _To GET a document_   
 Make a GET request to `/api/documents/:id`  
 Pass `id` of the document in the url parameters.  
 Set a user's token in the authorization headers.
 
-###### _To UPDATE or DELETE a document_  
+#### _To UPDATE or DELETE a document_  
 Make a PUT or DELETE request to `/api/documents/:id`   
 Pass `id` of the document in the url parameters.  
 Set a user's token in the authorization headers.   
@@ -132,22 +132,22 @@ Send a valid updated data on a PUT request.
 
 ### Types Endpoint
 
-###### _To CREATE a document type_   
+#### _To CREATE a document type_   
 Make a POST request to `/api/types` endpoint.  
 Set a user's token in the authorization headers.   
 Send data with valid `title` attributes.    
 
-###### _To GET all types_  
+#### _To GET all types_  
 Make a GET request to `/api/types`  
 Set a user's token in the authorization headers.  
 Use `set({ 'x-access-token': <token> })` or `set({ authorization: <token> })`
 
-###### _To GET a type_   
+#### _To GET a type_   
 Make a GET request to `/api/types/:id`  
 Pass `id` of the type in the url parameters.  
 Set a user's token in the authorization headers.
 
-###### _To UPDATE or DELETE a type_  
+#### _To UPDATE or DELETE a type_  
 Make a PUT or DELETE request to `/api/types/:id`   
 Pass `id` of the type in the url parameters.  
 Set a user's token in the authorization headers.   
