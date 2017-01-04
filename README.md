@@ -4,12 +4,11 @@
 [![Coverage Status](https://coveralls.io/repos/github/andela-efortune/documentManagementSystem/badge.svg?branch=Feature%2FRoutes-Setup)](https://coveralls.io/github/andela-efortune/documentManagementSystem?branch=Feature%2FRoutes-Setup)
 [![Issue Count](https://codeclimate.com/github/andela-efortune/documentManagementSystem/badges/issue_count.svg)](https://codeclimate.com/github/andela-efortune/documentManagementSystem)
 
-This is a system (API) that manages documents with types, users and user roles. Each document defines access rights; the document defines which roles can access it. Also, each document specifies the date it was published. It is built with NodeJS, Express and Postgres.
-
-_It employs ES6 syntaxes traspiled down to ES5 using Babel._
+This is a system (API) that manages documents with types, users and user roles. Each document defines access rights; the document defines which roles can access it. Also, each document specifies the date it was published and can have a type set for it. It is built with NodeJS, Express and Postgres.  
+_Source code employs ES6 syntax traspiled down to ES5 using [Babel](babel.io)._
 
 ### Features
-Below are some of the features of the API:
+Below are some of its features:
 
 #### Authentication
 It uses JWT for authentication.  
@@ -46,7 +45,8 @@ It allows only authenticated users to create, delete and update types.
 
 
 ### Installation
-* Clone the repo `git clone https://github.com/andela-efortune/documentManagementSystem.git`
+* Clone the project repository
+* Run `git clone https://github.com/andela-efortune/documentManagementSystem.git`
 * Change directory into the `documentManagementSystem` directory.
 * Run `yarn install` to install the dependencies in the `package.json` file.
 * Run `yarn run start` to start the project.
