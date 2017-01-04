@@ -20,7 +20,7 @@ const expect = chai.expect;
 const adminUser = helper.adminUser;
 const regularUser = helper.regularUser;
 const testUser = helper.testUser;
-
+const testUser2 = helper.testUser3;
 
 /**
  * Initialize a username and tokens for the tests
@@ -75,9 +75,20 @@ describe('User', () => {
     it('Should create a unique user', (done) => {
       request.post('/api/users')
         .send(regularUser)
-        .expect(400)
+        .expect(409)
         .end((err, res) => {
-          expect(/user with this email/.test(res.body.message)).to.equal(true);
+          expect(/There's a user with this email/.test(res.body.message)).to.equal(true);
+          done();
+        });
+    });
+
+    it('Should have a new role set regular by default', (done) => {
+      request.post('/api/users')
+        .send(testUser2)
+        .expect(201)
+        .end((err, res) => {
+          expect(res.body.user).to.have.property('RoleId');
+          expect(res.body.user.RoleId).to.equal(2);
           done();
         });
     });
@@ -130,6 +141,19 @@ describe('User', () => {
           expect(res.body[0]).to.have.property('lastName');
           expect(res.body[0]).to.have.property('username');
           expect(res.body[0]).to.have.property('email');
+          done();
+        });
+    });
+
+    it('Should fail to return all users to a non admin', (done) => {
+      request.get('/api/users')
+        .set({ 'x-access-token': regularToken })
+        .expect(403)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message)
+            .to.equal('Access forbidden, you are not an admin!');
           done();
         });
     });
@@ -190,7 +214,11 @@ describe('User', () => {
     it('Should edit and update a user', (done) => {
       request.put(`/api/users/${regularUsername}`)
         .set({ 'x-access-token': regularToken })
-        .send({ firstName: 'John', lastName: 'Doe' })
+        .send({
+          firstName: 'John',
+          lastName: 'Doe',
+          password: 'newpassword'
+        })
         .expect(200)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
@@ -210,22 +238,21 @@ describe('User', () => {
           done();
         });
     });
-
-    it('Should hash updated password', (done) => {
-      request.put(`/api/users/${regularUsername}`)
-        .set({ 'x-access-token': regularToken })
-        .send({ password: 'newpassword' })
-        .expect(200)
-        .end((err, res) => {
-          if (err) return done(err);
-          expect(typeof res.body).to.equal('object');
-          expect(res.body.username).to.equal(regularUsername);
-          done();
-        });
-    });
   });
 
   describe('Delete a user', () => {
+    it('Should fail to delete a user by a different user', (done) => {
+      request.delete(`/api/users/${regularUsername}`)
+        .set({ 'x-access-token': adminToken })
+        .expect(403)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message)
+            .to.equal('Oops! you cant delete someone else');
+          done();
+        });
+    });
+
     it('Should find and delete a user', (done) => {
       request.delete(`/api/users/${regularUsername}`)
         .set({ 'x-access-token': regularToken })

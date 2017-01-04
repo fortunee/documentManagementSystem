@@ -3,7 +3,6 @@ import db from '../models';
 
 const secret = process.env.SECRET || 'jump drop mobs kicking it in';
 
-
 /**
  * All user fields and set values to the
  * specific fields
@@ -24,7 +23,6 @@ const allUserFields = (user) => {
 
   return fields;
 };
-
 
 /**
  * Users controller
@@ -53,7 +51,6 @@ const UsersCtrl = {
         }
       });
   },
-
 
   /**
    * logout - Logout a user
@@ -103,9 +100,12 @@ const UsersCtrl = {
             .send({ message: `There's a user with this email: ${req.body.email}` });
         }
 
+        if (!req.body.RoleId) {
+          req.body.RoleId = 2;
+        }
+
         db.User.create(req.body)
           .then((user) => {
-            // user.RoleId = 2;
             const token = jwt.sign({
               UserId: user.id,
               RoleId: user.RoleId
@@ -174,6 +174,11 @@ const UsersCtrl = {
         if (!user) {
           return res.status(404)
             .send({ message: 'Cannot delete a user that does not exist' });
+        }
+
+        if (user.id !== req.decoded.UserId) {
+          return res.status(403)
+            .send({ message: 'Oops! you cant delete someone else' });
         }
 
         user.destroy()

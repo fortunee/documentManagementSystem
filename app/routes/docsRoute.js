@@ -12,7 +12,6 @@ const docsRoute = (router) => {
     .get(Authentication.verifyToken, DocsCtrl.allDocs)
     .post(Authentication.verifyToken, DocsCtrl.createDoc);
 
-
   /**
    * Get, Update and delete a specific document
    */
@@ -20,7 +19,6 @@ const docsRoute = (router) => {
     .get(Authentication.verifyToken, DocsCtrl.getDoc)
     .put(Authentication.verifyToken, DocsCtrl.editDoc)
     .delete(Authentication.verifyToken, DocsCtrl.deleteDoc);
-
 
   /**
    * Get all documents belonging to a specific user.

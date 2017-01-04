@@ -1,7 +1,6 @@
 import db from '../models';
 import helpers from './helpers';
 
-
 const DocsCtrl = {
 
   /**

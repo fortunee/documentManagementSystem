@@ -24,7 +24,6 @@ const testUser = helper.testUser2;
  */
 let document, adminToken, regularToken, testToken;
 
-
 describe('Document', () => {
   before((done) => {
     request.post('/api/users')
@@ -140,7 +139,8 @@ describe('Document', () => {
       request.get('/api/documents')
         .set({ 'x-access-token': adminToken })
         .expect(200).end((err, res) => {
-          expect(typeof res.body).to.equal('object');
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body.length).to.equal(8);
           done();
         });
     });
@@ -172,7 +172,8 @@ describe('Document', () => {
       request.get('/api/documents')
         .set({ 'x-access-token': regularToken })
         .expect(200).end((err, res) => {
-          expect(typeof res.body).to.equal('object');
+          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body.length).not.to.equal(8);
           done();
         });
     });
@@ -241,7 +242,7 @@ describe('Document', () => {
         .expect(200).end((err, res) => {
           if (err) return done(err);
           expect(Array.isArray(res.body)).to.equal(true);
-          expect(res.body[0].OwnerId).not.to.equal(null);
+          expect(res.body[0].Owner.RoleId).not.to.equal(null);
           done();
         });
     });

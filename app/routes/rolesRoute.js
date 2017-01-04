@@ -4,7 +4,6 @@
 import RolesCtrl from '../../app/controllers/rolesCtrl';
 import Authentication from '../../app/middlewares/auth';
 
-
 const rolesRoute = (router) => {
   router.route('/roles')
     .get(Authentication.verifyToken, Authentication.verifyAdmin, RolesCtrl.allRoles)

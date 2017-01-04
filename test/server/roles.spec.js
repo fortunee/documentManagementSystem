@@ -19,7 +19,6 @@ const expect = chai.expect;
  */
 const adminUser = helper.adminUser2;
 const regularUser = helper.regularUser2;
-const testUser = helper.testUser;
 
 /**
  * Declare token variables for test
@@ -60,7 +59,6 @@ describe('Role', () => {
       request.post('/api/roles')
         .set({ 'x-access-token': adminToken })
         .send({ title: 'new role' })
-        .expect(400)
         .end((err, res) => {
           if (err) return done(err);
           expect(Array.isArray(res.body)).to.equal(true);
@@ -107,6 +105,18 @@ describe('Role', () => {
         });
     });
 
+    it('Should fail to return all roles to a non admin', (done) => {
+      request.get('/api/roles')
+        .set({ 'x-access-token': regularToken })
+        .expect(403)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message)
+            .to.equal('Access forbidden, you are not an admin!');
+          done();
+        });
+    });
 
     it('Should return a specific role', (done) => {
       request.get('/api/roles/1')
@@ -146,6 +156,20 @@ describe('Role', () => {
         });
     });
 
+    it('Should fail to update a role by a non admin', (done) => {
+      request.put('/api/roles/3')
+        .set({ 'x-access-token': regularToken })
+        .send({ title: 'updated role' })
+        .expect(403)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message)
+            .to.equal('Access forbidden, you are not an admin!');
+          done();
+        });
+    });
+
     it('Should fail if a role does not exist', (done) => {
       request.put('/api/roles/10')
         .set({ 'x-access-token': adminToken })
@@ -162,6 +186,19 @@ describe('Role', () => {
   });
 
   describe('Delete role', () => {
+    it('Should fail to delete a role by a non admin', (done) => {
+      request.delete('/api/roles/3')
+        .set({ 'x-access-token': regularToken })
+        .expect(403)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body.message)
+            .to.equal('Access forbidden, you are not an admin!');
+          done();
+        });
+    });
+
     it('Should delete a role', (done) => {
       request.delete('/api/roles/3')
         .set({ 'x-access-token': adminToken })
@@ -172,7 +209,6 @@ describe('Role', () => {
           done();
         });
     });
-
 
     it('Should fail if a role does not exist', (done) => {
       request.delete('/api/roles/10')

@@ -1,12 +1,9 @@
 import db from '../models';
 
-
 /**
  * controllers helper functions
  */
 const Helpers = {
-
-
   /**
    * isAdmin - This returns all documents
    *
@@ -21,12 +18,20 @@ const Helpers = {
       access: req.query.access,
       type: req.query.type,
       order: '"createdAt" DESC',
+      include: [
+        {
+          as: 'Owner',
+          model: db.User,
+          attributes: [
+            'RoleId'
+          ]
+        }
+      ]
     })
       .then((documents) => {
         res.send(documents);
       });
   },
-
 
   /**
    * isNotAdmin - This returns the documents that match the criteria
@@ -71,7 +76,6 @@ const Helpers = {
       );
     });
   }
-
 };
 
 export default Helpers;
