@@ -12,7 +12,7 @@ Below are some of its features:
 
 #### Authentication
 It uses JWT for authentication.  
-It generates a token and returns it to the user.  
+It generates a token and returns it to the client.  
 It verifies the token on every request.  
 It ensures a user is authenticated to access some routes.
 
@@ -59,7 +59,14 @@ It allows only authenticated users to create, delete and update types.
 ***To CREATE a user***   
 Make a POST request to `/api/users` endpoint.  
 Send data with valid `username`, `email`, `password`,  `firstName` and  `lastName` attributes.   
-It returns a token and a few attributes of the created user.  
+It returns a token and a few attributes of the created client.  
+
+***To LOGIN a user***   
+Make a POST request to `/api/users/login` endpoint.
+Send data with valid `email` and `password` attributes.
+
+***To LOGOUT a user***
+Make a POST request to `/api/users/logout` endpoint.
 
 ***To GET all users***  
 Make a GET request to `/api/users`  
@@ -133,7 +140,7 @@ Send data with valid `title` attributes.
 ***To GET all types***  
 Make a GET request to `/api/types`  
 Set a user's token in the authorization headers.  
-Use `set({ 'x-access-token': <adminToken> })` or `set({ authorization: <adminToken> })`
+Use `set({ 'x-access-token': <token> })` or `set({ authorization: <token> })`
 
 ***To GET a type***   
 Make a GET request to `/api/types/:id`  
