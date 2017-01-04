@@ -7,7 +7,7 @@
 This is a system (API) that manages documents with types, users and user roles. Each document defines access rights; the document defines which roles can access it. Also, each document specifies the date it was published and can have a type set for it. It is built with NodeJS, Express and Postgres.  
 _Source code employs ES6 syntax traspiled down to ES5 using [Babel](babel.io)._
 
-### Features
+## Features
 Below are some of its features:
 
 #### Authentication
@@ -44,7 +44,7 @@ It allows authenticated users to add types to any document they create.
 It allows only authenticated users to create, delete and update types.   
 
 
-### Installation
+## Installation
 * Clone the project repository
 * Run `git clone https://github.com/andela-efortune/documentManagementSystem.git`
 * Change directory into the `documentManagementSystem` directory.
@@ -52,11 +52,11 @@ It allows only authenticated users to create, delete and update types.
 * Run `yarn run start` to start the project.
 * Use [Postman](https://chrome.google.com/webstore/detail/postman-rest-client-packa/fhbjgbiflinjbdggehcddcbncdddomop?hl=en) or any API testing tool of your choice to access the endpoints defined below.
 
-### Usage
+## Usage
 
-##### Users Endpoint
+### Users Endpoint
 
-***To CREATE a user***   
+**_To CREATE a user_**  
 Make a POST request to `/api/users` endpoint.  
 Send data with valid `username`, `email`, `password`,  `firstName` and  `lastName` attributes.   
 It returns a token and a few attributes of the created user.  
@@ -84,7 +84,7 @@ Pass `username` of the user in the url parameters.
 Set the user's token in the authorization headers.
 Send a valid updated data on a PUT request.
 
-##### Roles Endpoint
+### Roles Endpoint
 
 ***To CREATE a role***   
 Make a POST request to `/api/roles` endpoint.  
@@ -107,7 +107,7 @@ Pass `id` of the role in the url parameters.
 Set the admin user's token in the authorization headers.   
 Send a valid updated data on a PUT request.
 
-##### Documents Endpoint
+### Documents Endpoint
 
 ***To CREATE a document***   
 Make a POST request to `/api/documents` endpoint.  
@@ -130,7 +130,7 @@ Pass `id` of the document in the url parameters.
 Set a user's token in the authorization headers.   
 Send a valid updated data on a PUT request.
 
-##### Types Endpoint
+### Types Endpoint
 
 ***To CREATE a document type***   
 Make a POST request to `/api/types` endpoint.  
@@ -153,9 +153,9 @@ Pass `id` of the type in the url parameters.
 Set a user's token in the authorization headers.   
 Send a valid updated data on a PUT request.
 
-###### Inspired by [TIA](https://andela.com/)
+##### Inspired by [TIA](https://andela.com/)
 
-### Licence
+## Licence
 * **ISC**
 
 Copyright (c) 2017 Fortune Ikechukwu Ekeruo
