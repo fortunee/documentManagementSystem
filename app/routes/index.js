@@ -1,10 +1,14 @@
-import userRoute from './userRoute';
-import docRoute from './docRoute';
+import usersRoute from './usersRoute';
+import docsRoute from './docsRoute';
+import rolesRoute from './rolesRoute';
+import typesRoute from './typesRoute';
 
 // Configure routes
 const routes = (router) => {
-  userRoute(router);
-  docRoute(router);
+  usersRoute(router);
+  docsRoute(router);
+  rolesRoute(router);
+  typesRoute(router);
 };
 
 export default routes;
