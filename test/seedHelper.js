@@ -21,16 +21,17 @@ class SeedData {
    * @method init
    * @return {Void} No Return
    */
-  init() {
-    Promise.all([
-      this.models.sequelize.sync({ force: true }),
-      this.rolesData(),
-      this.usersData(),
-      this.typesData(),
-      this.documentsData(),
-    ])
-    .then(() => 'Seed data initialization complete...')
-    .catch(e => e)
+  init async () {
+    try {
+      await this.models.sequelize.sync({ force: true });
+      await this.rolesData();
+      await this.rolesData();
+      await this.usersData();
+      await this.typesData();
+      await this.documentsData();
+      
+      return 'Seed data initialization complete...'
+    } catch (e => e)
   }
 
   /**
