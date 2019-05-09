@@ -25,7 +25,6 @@ class SeedData {
     try {
       await this.models.sequelize.sync({ force: true });
       await this.rolesData();
-      await this.rolesData();
       await this.usersData();
       await this.typesData();
       await this.documentsData();
