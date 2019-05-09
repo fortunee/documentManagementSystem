@@ -21,7 +21,7 @@ class SeedData {
    * @method init
    * @return {Void} No Return
    */
-  init async () {
+  async init() {
     try {
       await this.models.sequelize.sync({ force: true });
       await this.rolesData();
