@@ -22,35 +22,15 @@ class SeedData {
    * @return {Void} No Return
    */
   init() {
-    this.models.sequelize.sync({ force: true })
-      .then(() => {
-        this.rolesData()
-          .then(() => {
-            this.usersData()
-              .then(() => {
-                this.typesData()
-                .then(() => {
-                  this.documentsData()
-                    .catch((err) => {
-                      // eslint-disable-next-line
-                      console.log(err);
-                    });
-                })
-                .catch((err) => {
-                  // eslint-disable-next-line
-                  console.log(err);
-                });
-              })
-              .catch((err) => {
-                // eslint-disable-next-line
-                console.log(err);
-              });
-          })
-          .catch((err) => {
-            // eslint-disable-next-line
-            console.log(err);
-          });
-      });
+    Promise.all([
+      this.models.sequelize.sync({ force: true }),
+      this.rolesData(),
+      this.usersData(),
+      this.typesData(),
+      this.documentsData(),
+    ])
+    .then(() => 'Seed data initialization complete...')
+    .catch(e => return e)
   }
 
   /**
