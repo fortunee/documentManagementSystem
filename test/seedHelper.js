@@ -30,7 +30,7 @@ class SeedData {
       this.documentsData(),
     ])
     .then(() => 'Seed data initialization complete...')
-    .catch(e => return e)
+    .catch(e => e)
   }
 
   /**
