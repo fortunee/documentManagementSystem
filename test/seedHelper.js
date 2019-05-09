@@ -31,7 +31,9 @@ class SeedData {
       await this.documentsData();
       
       return 'Seed data initialization complete...'
-    } catch (e => e)
+    } catch (e) {
+      return e
+    }
   }
 
   /**
