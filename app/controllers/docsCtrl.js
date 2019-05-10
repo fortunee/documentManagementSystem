@@ -9,15 +9,14 @@ const DocsCtrl = {
    * @param {Object} res Response object
    * @returns {Void} Returns Void
    */
-  allDocs(req, res) {
-    db.Role.findById(req.decoded.RoleId)
-    .then((role) => {
-      if (role.title === 'admin') {
-        helpers.isAdmin(req, res);
-      } else {
-        helpers.isNotAdmin(req, res);
-      }
-    });
+   async allDocs (req, res) {
+    const role = await db.Role.findById(req.decoded.RoleId);
+    
+    if (role.title === 'admin') {
+       helpers.isAdmin(req, res);
+     } else {
+       helpers.isNotAdmin(req, res);
+     }
   },
 
   /**
