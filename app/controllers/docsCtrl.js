@@ -25,11 +25,13 @@ const DocsCtrl = {
    * @param {Object} res Response object
    * @returns {Void} Returns Void
    */
-  getUserDocuments(req, res) {
-    db.Document.findAll({ where: { OwnerId: req.params.id } })
-      .then((documents) => {
-        res.send(documents);
-      });
+  async getUserDocuments(req, res) {
+    try {
+      const documents = db.Document.findAll({ where: { OwnerId: req.params.id } });
+      res.send(documents);
+    } catch(e) {
+      res.send(e)
+    }
   },
 
   /**
