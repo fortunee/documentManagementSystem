@@ -30,7 +30,7 @@ const DocsCtrl = {
       .findAll({ where: { OwnerId: req.params.id } })
       .catch(e => res.status(400).send(e));
     
-    res.status(200).send(document)
+    res.status(200).send(documents)
   },
 
   /**
