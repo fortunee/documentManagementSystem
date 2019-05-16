@@ -21,14 +21,14 @@ const DocsCtrl = {
 
   /**
    * Gets all documents belonging to a specific user
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Void} Returns Void
+   * @param {object} req object
+   * @param {object} res object
+   * @returns {object} returns user's document or error object
    */
   async getUserDocuments(req, res) {
     const documents = await db.Document
       .findAll({ where: { OwnerId: req.params.id } })
-      .catch(e => res.status(400)send(e));
+      .catch(e => res.status(400).send(e));
     
     res.status(200).send(document)
   },
