@@ -26,9 +26,11 @@ const DocsCtrl = {
    * @returns {Void} Returns Void
    */
   async getUserDocuments(req, res) {
-      const documents = await db.Document
-        .findAll({ where: { OwnerId: req.params.id } })
-        .catch(e => e);
+    const documents = await db.Document
+      .findAll({ where: { OwnerId: req.params.id } })
+      .catch(e => res.status(400)send(e));
+    
+    res.status(200).send(document)
   },
 
   /**
