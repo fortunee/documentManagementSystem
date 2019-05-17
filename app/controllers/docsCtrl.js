@@ -10,7 +10,8 @@ const DocsCtrl = {
    * @returns {Void} Returns Void
    */
    async allDocs (req, res) {
-    const role = await db.Role.findById(req.decoded.RoleId);
+    const role = await db.Role.findById(req.decoded.RoleId)
+      .catch(e => res.status(400).send(e));
     
     if (role.title === 'admin') {
        helpers.isAdmin(req, res);
