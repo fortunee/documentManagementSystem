@@ -36,19 +36,17 @@ const DocsCtrl = {
 
   /**
    * Create a new document
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Void} Returns Void
+   * @param {object} req Request object
+   * @param {object} res Response object
+   * @returns {object} document | error object
    */
-  createDoc(req, res) {
+  async createDoc(req, res) {
     req.body.OwnerId = req.decoded.UserId;
-    db.Document.create(req.body)
-      .then((document) => {
-        res.status(201).send(document);
-      })
-      .catch((err) => {
-        res.status(400).send(err.errors);
-      });
+    
+    const document = await db.Document.create(req.body)
+      .catch(err => res.status(400).send(err.errors));
+    
+    res.status(201).send(document);
   },
 
   /**
