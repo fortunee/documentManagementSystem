@@ -51,34 +51,33 @@ const DocsCtrl = {
 
   /**
    * Get a specific document
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Void} Returns Void
+   * @param {object} req Request object
+   * @param {object} res Response object
+   * @returns {object} document | error
    */
-  getDoc(req, res) {
-    db.Document.findById(req.params.id)
-     .then((document) => {
-       if (!document) {
-         return res.status(404)
-           .send({
-             message: `Document with the id: ${req.params.id} does not exit`
-           });
-       }
-
-       db.Role.findById(req.decoded.RoleId)
-         .then((role) => {
-           if (role.title === 'admin') {
-             res.send(document);
-           } else {
-             if (document.access === 'private'
-                 && document.OwnerId !== req.decoded.UserId) {
-               return res.status(403)
-                 .send({ message: 'This is a private document' });
-             }
-             res.send(document);
-           }
+  async getDoc(req, res) {
+    const document = await db.Document.findById(req.params.id)
+      .catch(e => res.status(400).send(e));
+    
+    if (!document) {
+       return res.status(404)
+         .send({
+           message: `Document with the id: ${req.params.id} does not exit`
          });
-     });
+     }
+    
+    const userRole = await db.Role.findById(req.decoded.RoleId)
+      .catch(e => res.status(400).send(e));
+    
+    if (userRole.title === 'admin') {
+       return res.status(200).send(document);
+     } else {
+       if (document.access === 'private' && document.OwnerId !== req.decoded.UserId) {
+         return res.status(403)
+           .send({ message: 'This is a private document' });
+       }
+       res.status(200).send(document);
+     }
   },
 
   /**
