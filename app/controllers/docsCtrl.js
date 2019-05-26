@@ -82,9 +82,9 @@ const DocsCtrl = {
 
   /**
    * Edit and update a specific document
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Void} Returns Void
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} updated document
    */
   async editDoc(req, res) {
      const document = await db.Document.findById(req.params.id)
@@ -101,7 +101,7 @@ const DocsCtrl = {
 
      const updatedDoc = await document.update(req.body);
     
-     return res.status(200).send(updatedDocument);
+     return res.status(200).send(updatedDoc);
   },
 
   /**
