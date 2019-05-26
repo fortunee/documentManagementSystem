@@ -86,24 +86,22 @@ const DocsCtrl = {
    * @param {Object} res Response object
    * @returns {Void} Returns Void
    */
-  editDoc(req, res) {
-    db.Document.findById(req.params.id)
-      .then((document) => {
-        if (!document) {
-          return res.status(404)
-            .send({ message: 'Cannot edit a document that does not exist' });
-        }
+  async editDoc(req, res) {
+     const document = await db.Document.findById(req.params.id)
+       .catch(e => res.status(400).send(e));
+     if (!document) {
+       return res.status(404)
+         .send({ message: 'Cannot edit a document that does not exist' });
+     }
 
-        if (document.OwnerId !== req.decoded.UserId) {
-          return res.status(403)
-            .send({ message: 'You are not the owner of this document' });
-        }
+     if (document.OwnerId !== req.decoded.UserId) {
+       return res.status(403)
+         .send({ message: 'You are not the owner of this document' });
+     }
 
-        document.update(req.body)
-          .then((updatedDocument) => {
-            res.send(updatedDocument);
-          });
-      });
+     const updatedDoc = await document.update(req.body);
+    
+     return res.status(200).send(updatedDocument);
   },
 
   /**
