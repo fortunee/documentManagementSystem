@@ -5,9 +5,9 @@ const DocsCtrl = {
 
   /**
    * Gets all documents depending on who is requesting
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Void} Returns Void
+   * @param {object} req
+   * @param {object} res
+   * @returns {void}
    */
    async allDocs (req, res) {
     const role = await db.Role.findById(req.decoded.RoleId)
@@ -125,7 +125,7 @@ const DocsCtrl = {
     
     await document.destroy().catch(e => res.status(500).send(e));
     
-    return res.status().send({ message: 'Document deleted.' });
+    return res.send({ message: 'Document deleted.' });
   }
 };
 
