@@ -106,27 +106,26 @@ const DocsCtrl = {
 
   /**
    * Delete a specific document
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Void} Returns Void
+   * @param {object} req
+   * @param {object} res
+   * @returns {void} Returns void
    */
-  deleteDoc(req, res) {
-    db.Document.findById(req.params.id)
-      .then((document) => {
-        if (!document) {
-          return res.status(404)
-            .send({ message: 'Cannot delete a document that does not exist' });
-        }
-
-        if (document.OwnerId !== req.decoded.UserId) {
-          return res.status(403)
-            .send({ message: 'This document does not belong to you' });
-        }
-
-        document.destroy()
-          .then(() => res.send({ message: 'Document deleted.' }));
-      });
-  }
+  async deleteDoc(req, res) {
+    const document = await db.Document.findById(req.params.id);
+    
+    if (!document) {
+      return res.status(404)
+        .send({ message: 'Cannot delete a document that does not exist' });
+    }
+    
+    if (document.OwnerId !== req.decoded.UserId) {
+      return res.status(403)
+        .send({ message: 'This document does not belong to you' });
+    }
+    
+    await document.destroy().catch(e => res.status(500).send(e));
+    
+    return res.send({ message: 'Document deleted.' }));
 };
 
 export default DocsCtrl;
