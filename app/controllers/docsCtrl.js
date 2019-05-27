@@ -126,6 +126,7 @@ const DocsCtrl = {
     await document.destroy().catch(e => res.status(500).send(e));
     
     return res.status().send({ message: 'Document deleted.' });
+  }
 };
 
 export default DocsCtrl;
