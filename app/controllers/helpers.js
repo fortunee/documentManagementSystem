@@ -7,12 +7,12 @@ const Helpers = {
   /**
    * isAdmin - This returns all documents
    *
-   * @param  {Object} req Request Object
-   * @param  {Object} res Response Object
-   * @returns {Void}     Returns Void
+   * @param  {object} req
+   * @param  {object} res
+   * @returns {object}
    */
-  isAdmin(req, res) {
-    db.Document.findAll({
+  async isAdmin(req, res) {
+    const documents = await db.Document.findAll({
       offset: req.query.start,
       limit: req.query.limit,
       access: req.query.access,
@@ -27,10 +27,9 @@ const Helpers = {
           ]
         }
       ]
-    })
-      .then((documents) => {
-        res.send(documents);
-      });
+    });
+    
+    res.send(documents);
   },
 
   /**
