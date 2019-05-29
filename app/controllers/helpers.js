@@ -12,7 +12,7 @@ const Helpers = {
    * @returns {object}
    */
   async isAdmin(req, res) {
-    const documents = await db.Document.findAll({
+    const queryOptions = {
       offset: req.query.start,
       limit: req.query.limit,
       access: req.query.access,
@@ -27,7 +27,8 @@ const Helpers = {
           ]
         }
       ]
-    });
+    }
+    const documents = await db.Document.findAll(queryOptions);
     
     res.send(documents);
   },
