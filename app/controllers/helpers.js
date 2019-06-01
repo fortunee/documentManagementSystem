@@ -60,14 +60,16 @@ const Helpers = {
       ]
     }
     
-    const documents = await db.Document.findAll(queryOptions);
+    const allDocuments = await db.Document.findAll(queryOptions);
     
-    res.status(200).send(
-      documents.filter(
-          document => document.access === 'role' && 
-          document.Owner.RoleId === req.decoded.RoleId
-      )
-    );
+    const documents = allDocuments.filter((document) => {
+        if (document.access === 'role') {
+          return document.Owner.RoleId === req.decoded.RoleId;
+        }
+        return true;
+      })
+
+    res.status(200).send(documents);
   }
 };
 
