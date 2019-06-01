@@ -36,12 +36,12 @@ const Helpers = {
   /**
    * isNotAdmin - This returns the documents that match the criteria
    *
-   * @param  {Object} req Request Object
-   * @param  {Object} res Response Object
-   * @returns {Object}     Filetered documents
+   * @param  {object} req
+   * @param  {object} res
+   * @returns {object} Filtered documents
    */
-  isNotAdmin(req, res) {
-    db.Document.findAll({
+  async isNotAdmin(req, res) {
+    const queryOptions = {
       offset: req.query.start || null,
       limit: req.query.limit,
       access: req.query.access || null,
@@ -49,32 +49,25 @@ const Helpers = {
       order: '"createdAt" DESC',
       where: db.Sequelize.or(
         { OwnerId: req.decoded.UserId },
-        {
-          access: {
-            $notIn: ['private'],
-          },
-        },
+        { access: { $notIn: ['private'] } },
       ),
       include: [
-        {
+        { 
           as: 'Owner',
           model: db.User,
-          attributes: [
-            'RoleId'
-          ]
+          attributes: [ 'RoleId' ]
         }
       ]
-    }).then((documents) => {
-      res.status(200).send(
-        documents
-          .filter((document) => {
-            if (document.access === 'role') {
-              return document.Owner.RoleId === req.decoded.RoleId;
-            }
-            return true;
-          })
-      );
-    });
+    }
+    
+    const documents = await db.Document.findAll(queryOptions);
+    
+    res.status(200).send(
+      documents.filter(
+          document => document.access === 'role' && 
+          document.Owner.RoleId === req.decoded.RoleId
+      )
+    );
   }
 };
 
