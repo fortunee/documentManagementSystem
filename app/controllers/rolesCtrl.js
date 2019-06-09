@@ -3,30 +3,28 @@ import db from '../models';
 const RolesCtrl = {
   /**
    * Grab all the roles in the db
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
-   * @returns {Void} Returns Void
+   * @param {object} req
+   * @param {object} res
+   * @returns {void}
    */
-  allRoles(req, res) {
-    db.Role.findAll().then((roles) => {
-      res.send(roles);
-    });
+  async allRoles(req, res) {
+    const roles = await db.Role.findAll()
+      .catch(e => res.status(500).send(e.errors));
+    
+    res.status(200).send(roles);
   },
 
   /**
    * Create a new role
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
-   * @returns {Void} Returns Void
+   * @param {bject} req
+   * @param {object} res
+   * @returns {void}
    */
-  createRole(req, res) {
-    db.Role.create(req.body)
-      .then((role) => {
-        res.status(201).send(role);
-      })
-      .catch((err) => {
-        res.status(400).send(err.errors);
-      });
+  async createRole(req, res) {
+    const role = await db.Role.create(req.body)
+      .catch(err => res.status(400).send(err.errors));
+    
+    res.status(201).send(role);
   },
 
   /**
