@@ -16,7 +16,7 @@ const RolesCtrl = {
 
   /**
    * Create a new role
-   * @param {bject} req
+   * @param {object} req
    * @param {object} res
    * @returns {void}
    */
@@ -29,20 +29,20 @@ const RolesCtrl = {
 
   /**
    * Grab a specific role
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Object} Response object
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} role
    */
-  getRole(req, res) {
-    db.Role.findById(req.params.id)
-      .then((role) => {
-        if (!role) {
-          return res.status(404)
-            .send({ message: `Role with the id: ${req.params.id} does not exit` });
-        }
+  async getRole(req, res) {
+    const role = await db.Role.findById(req.params.id)
+      .catch(err => res.status(400).send(err.errors));
+    
+    if (!role) {
+      return res.status(404)
+        .send({ message: `Role with the id: ${req.params.id} does not exit` });
+    }
 
-        res.send(role);
-      });
+    return res.statu(200).send(role);
   },
 
   /**
