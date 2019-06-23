@@ -5,13 +5,13 @@ const RolesCtrl = {
    * Grab all the roles in the db
    * @param {object} req
    * @param {object} res
-   * @returns {void}
+   * @returns {object} roles
    */
   async allRoles(req, res) {
     const roles = await db.Role.findAll()
       .catch(e => res.status(500).send(e.errors));
     
-    res.status(200).send(roles);
+    return res.status(200).send(roles);
   },
 
   /**
@@ -42,14 +42,14 @@ const RolesCtrl = {
         .send({ message: `Role with the id: ${req.params.id} does not exit` });
     }
 
-    return res.statu(200).send(role);
+    return res.status(200).send(role);
   },
 
   /**
    * Edit and update a specific role
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Object} Response Object
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} role
    */
   editRole(req, res) {
     db.Role.findById(req.params.id)
