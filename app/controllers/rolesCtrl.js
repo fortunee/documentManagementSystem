@@ -52,7 +52,7 @@ const RolesCtrl = {
    * @returns {object} role
    */
   async editRole(req, res) {
-    const role = db.Role.findById(req.params.id)
+    const role = await db.Role.findById(req.params.id)
       .catch(err => res.status(400).send(err.errors));
     
     if (!role) {
