@@ -51,19 +51,18 @@ const RolesCtrl = {
    * @param {object} res
    * @returns {object} role
    */
-  editRole(req, res) {
-    db.Role.findById(req.params.id)
-      .then((role) => {
-        if (!role) {
-          return res.status(404)
-            .send({ message: 'Cannot edit a role that does not exist' });
-        }
+  async editRole(req, res) {
+    const role = db.Role.findById(req.params.id)
+      .catch(err => res.status(400).send(err.errors));
+    
+    if (!role) {
+      return res.status(404)
+        .send({ message: 'Cannot edit a role that does not exist' });
+    }
 
-        role.update(req.body)
-          .then((updatedRole) => {
-            res.send(updatedRole);
-          });
-      });
+    const updatedRole = await role.update(req.body)
+    
+    return res.status(200).send(updatedRole)
   },
 
   /**
