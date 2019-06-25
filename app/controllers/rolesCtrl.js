@@ -67,23 +67,22 @@ const RolesCtrl = {
 
   /**
    * Delete a role
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Object} Response object
+   * @param {object} req
+   * @param {object} res
+   * @returns {object}
    */
-  deleteRole(req, res) {
-    db.Role.findById(req.params.id)
-      .then((role) => {
-        if (!role) {
-          return res.status(404)
-            .send({ message: 'Cannot delete a role that does not exist' });
-        }
+  async deleteRole(req, res) {
+    const role = await db.Role.findById(req.params.id);
+    
+    if (!role) {
+      return res.status(404)
+        .send({ message: 'Cannot delete a role that does not exist' });
+    }
 
-        role.destroy()
-          .then(() => res.send({ message: 'Role deleted.' }));
-      });
+    await role.destroy();
+    
+    return res.status(200).send({ message: 'Role deleted.' }));
   }
-
 };
 
 export default RolesCtrl;
