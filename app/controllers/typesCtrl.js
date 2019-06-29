@@ -27,20 +27,17 @@ const TypesCtrl = {
 
   /**
    * Get a specific type
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Object} Response object
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response object
    */
-  getType(req, res) {
-    db.Type.findById(req.params.id)
-      .then((type) => {
-        if (!type) {
-          return res.status(404)
-            .send({ message: `Type with the id: ${req.params.id} does not exist` });
-        }
-
-        res.send(type);
-      });
+  async getType(req, res) {
+    const type = await db.Type.findById(req.params.id);
+    if (!type) {
+      return res.status(404)
+        .send({ message: `Type with the id: ${req.params.id} does not exist` });
+    }
+    return res.status(200).send(type);
   },
 
   /**
