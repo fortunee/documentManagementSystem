@@ -1,4 +1,4 @@
-import db from '../models';
+import { Type } from '../models';
 
 const TypesCtrl = {
   /**
@@ -8,7 +8,7 @@ const TypesCtrl = {
    * @returns {object} types
    */
   async allTypes(req, res) {
-    const types = await db.Type.findAll();
+    const types = await Type.findAll();
     return res.send(types);
   },
 
@@ -19,7 +19,7 @@ const TypesCtrl = {
    * @returns {object} type
    */
   async createType(req, res) {
-    const type = await db.Type.create(req.body)
+    const type = await Type.create(req.body)
       .catch(err => res.status(400).send(err.errors));
     
     return res.status(201).send(type);
@@ -32,7 +32,7 @@ const TypesCtrl = {
    * @returns {object} response object
    */
   async getType(req, res) {
-    const type = await db.Type.findById(req.params.id);
+    const type = await Type.findById(req.params.id);
     if (!type) {
       return res.status(404)
         .send({ message: `Type with the id: ${req.params.id} does not exist` });
@@ -47,7 +47,7 @@ const TypesCtrl = {
    * @returns {object} response object
    */
   async editType(req, res) {
-    const type = await db.Type.findById(req.params.id);
+    const type = await Type.findById(req.params.id);
     
     if (!type) {
       return res.status(404)
@@ -65,7 +65,7 @@ const TypesCtrl = {
    * @returns {object} response object
    */
   async deleteType(req, res) {
-    const type = await db.Type.findById(req.params.id);
+    const type = await Type.findById(req.params.id);
     if (!type) {
       return res.status(404)
         .send({ message: 'Cannot delete a type that does not exist' });
