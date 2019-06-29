@@ -14,18 +14,15 @@ const TypesCtrl = {
 
   /**
    * Create a new type
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Void} Returns Void
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} type
    */
-  createType(req, res) {
-    db.Type.create(req.body)
-      .then((type) => {
-        res.status(201).send(type);
-      })
-      .catch((err) => {
-        res.status(400).send(err.errors);
-      });
+  async createType(req, res) {
+    const type = await db.Type.create(req.body)
+      .catch(err => res.status(400).send(err.errors));
+    
+    return res.status(201).send(type);
   },
 
   /**
