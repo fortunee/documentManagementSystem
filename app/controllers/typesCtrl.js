@@ -42,23 +42,20 @@ const TypesCtrl = {
 
   /**
    * Edit and update a specific type
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Response} Response object
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response object
    */
-  editType(req, res) {
-    db.Type.findById(req.params.id)
-      .then((type) => {
-        if (!type) {
-          return res.status(404)
-            .send({ message: 'Cannot edit a type that does not exist' });
-        }
-
-        type.update(req.body)
-          .then((updatedType) => {
-            res.send(updatedType);
-          });
-      });
+  async editType(req, res) {
+    const type = await db.Type.findById(req.params.id);
+    
+    if (!type) {
+      return res.status(404)
+        .send({ message: 'Cannot edit a type that does not exist' });
+    }
+    
+    const updatedType = await type.update(req.body);
+    return res.status(200).send(updatedType);
   },
 
   /**
