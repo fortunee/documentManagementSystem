@@ -60,21 +60,18 @@ const TypesCtrl = {
 
   /**
    * Delete a specific type
-   * @param {Object} req Request object
-   * @param {Object} res Response object
-   * @returns {Object} Response object
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response object
    */
-  deleteType(req, res) {
-    db.Type.findById(req.params.id)
-      .then((type) => {
-        if (!type) {
-          return res.status(404)
-            .send({ message: 'Cannot delete a type that does not exist' });
-        }
-
-        type.destroy()
-          .then(() => res.send({ message: 'Type deleted.' }));
-      });
+  async deleteType(req, res) {
+    const type = await db.Type.findById(req.params.id);
+    if (!type) {
+      return res.status(404)
+        .send({ message: 'Cannot delete a type that does not exist' });
+    }
+    await type.destroy();
+    return res.status(200).send({ message: 'Type deleted.' });
   }
 };
 
