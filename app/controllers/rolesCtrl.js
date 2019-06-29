@@ -79,7 +79,8 @@ const RolesCtrl = {
         .send({ message: 'Cannot delete a role that does not exist' });
     }
 
-    role.destroy().then(() => res.status(200).send({ message: 'Role deleted.' })));
+    await role.destroy();
+    return res.status(200).send({ message: 'Role deleted.' })
   }
 };
 
