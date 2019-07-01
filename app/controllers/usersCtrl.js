@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import db from '../models';
+import { User } from '../models';
 
 const secret = process.env.SECRET || 'jump drop mobs kicking it in';
 
@@ -36,7 +36,7 @@ const UsersCtrl = {
    * @returns {Object} Response object
    */
   login(req, res) {
-    db.User.findOne({ where: { email: req.body.email } })
+    User.findOne({ where: { email: req.body.email } })
       .then((user) => {
         if (user && user.validPassword(req.body.password)) {
           const token = jwt.sign({
@@ -70,7 +70,7 @@ const UsersCtrl = {
    * @returns {Void} Returns Void
    */
   allUsers(req, res) {
-    db.User.findAll({
+    User.findAll({
       fields: [
         'id',
         'username',
@@ -93,7 +93,7 @@ const UsersCtrl = {
    * @returns {Object} Response object
    */
   createUser(req, res) {
-    db.User.findOne({ where: { email: req.body.email } })
+    User.findOne({ where: { email: req.body.email } })
       .then((userExists) => {
         if (userExists) {
           return res.status(400)
@@ -104,7 +104,7 @@ const UsersCtrl = {
           req.body.RoleId = 2;
         }
 
-        db.User.create(req.body)
+        User.create(req.body)
           .then((user) => {
             const token = jwt.sign({
               UserId: user.id,
@@ -127,7 +127,7 @@ const UsersCtrl = {
   * @returns {Object} Response object
   */
   getUser(req, res) {
-    db.User.findOne({ where: { username: req.params.username } })
+    User.findOne({ where: { username: req.params.username } })
      .then((user) => {
        if (!user) {
          return res.status(404)
@@ -146,7 +146,7 @@ const UsersCtrl = {
    * @returns {Object} Response object
    */
   editUser(req, res) {
-    db.User.findOne({ where: { username: req.params.username } })
+    User.findOne({ where: { username: req.params.username } })
       .then((user) => {
         if (!user) {
           return res.status(404)
@@ -169,7 +169,7 @@ const UsersCtrl = {
    * @returns {Object} Response object
    */
   deleteUser(req, res) {
-    db.User.findOne({ where: { username: req.params.username } })
+    User.findOne({ where: { username: req.params.username } })
       .then((user) => {
         if (!user) {
           return res.status(404)
