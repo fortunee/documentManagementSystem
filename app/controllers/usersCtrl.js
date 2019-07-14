@@ -27,25 +27,22 @@ const UsersCtrl = {
 
   /**
    * Login a user
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
-   * @returns {Object} Response object
+   * @param {object} req
+   * @param {object} res
+   * @returns {0bject} user
    */
-  login(req, res) {
-    User.findOne({ where: { email: req.body.email } })
-      .then((user) => {
-        if (user && user.validPassword(req.body.password)) {
-          const token = jwt.sign({
-            UserId: user.id,
-            RoleId: user.RoleId
-          }, secret, { expiresIn: '2 days' });
-
-          res.send({ token, expiresIn: '2 days' });
-        } else {
-          res.status(401)
-            .send({ message: 'Authentication failed due to invalid credentials.' });
-        }
-      });
+  async login(req, res) {
+    const user = await User.findOne({ where: { email: req.body.email } })
+      .catch(e => res.status(400).send(e));
+    if (user && user.validPassword(req.body.password)) {
+      const token = jwt.sign({
+        UserId: user.id,
+        RoleId: user.RoleId
+      }, secret, { expiresIn: '2 days' });
+      return res.status(200).send({ token, expiresIn: '2 days' });
+    }
+    return res.status(401)
+      .send({ message: 'Authentication failed due to invalid credentials.' });
   },
 
   /**
