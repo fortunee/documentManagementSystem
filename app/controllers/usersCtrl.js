@@ -6,8 +6,8 @@ const secret = process.env.SECRET || 'jump drop mobs kicking it in';
 /**
  * All user fields and set values to the
  * specific fields
- * @param {Object}  user object
- * @returns {Object} user fields object
+ * @param {object}  user object
+ * @returns {object} user fields object
  */
 const allUserFields = (user) => ({
   id: user.id,
@@ -29,7 +29,7 @@ const UsersCtrl = {
    * Login a user
    * @param {object} req
    * @param {object} res
-   * @returns {0bject} user
+   * @returns {object} user
    */
   async login(req, res) {
     const user = await User.findOne({ where: { email: req.body.email } })
@@ -48,9 +48,9 @@ const UsersCtrl = {
   /**
    * logout - Logout a user
    *
-   * @param  {Objec} req - Request Object
-   * @param  {Object} res - Response Object
-   * @returns {Void}     Returns Void
+   * @param  {objec} req - request Object
+   * @param  {object} res - response Object
+   * @returns {object} object
    */
   logout(req, res) {
     res.send({ message: 'Successfully logged out.' });
@@ -58,12 +58,12 @@ const UsersCtrl = {
 
   /**
    * Grab all users with their fields
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
-   * @returns {Void} Returns Void
+   * @param {object} req - Request object
+   * @param {object} res - Response object
+   * @returns {object} Returns user object
    */
-  allUsers(req, res) {
-    User.findAll({
+  async allUsers(req, res) {
+    const users = await User.findAll({
       fields: [
         'id',
         'username',
@@ -74,9 +74,8 @@ const UsersCtrl = {
         'createdAt',
         'updatedAt'
       ]
-    }).then((users) => {
-      res.send(users);
     });
+   res.status(200).send(users);
   },
 
   /**
