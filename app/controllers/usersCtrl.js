@@ -80,36 +80,33 @@ const UsersCtrl = {
 
   /**
    * Create a new user
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
-   * @returns {Object} Response object
+   * @param {object} req - Request object
+   * @param {object} res - Response object
+   * @returns {object} User object
    */
-  createUser(req, res) {
-    User.findOne({ where: { email: req.body.email } })
-      .then((userExists) => {
-        if (userExists) {
-          return res.status(400)
-            .send({ message: `There's a user with this email: ${req.body.email}` });
-        }
+  async createUser(req, res) {
+    const existingUser = await User.findOne({ where: { email: req.body.email } })
+      .catch(err => res.status(400).send(err.errors));
+    
+    if (existingUser) {
+      return res.status(400)
+        .send({ message: `There's a user with this email: ${req.body.email}` });
+    }
 
-        if (!req.body.RoleId) {
-          req.body.RoleId = 2;
-        }
+    if (!req.body.RoleId) {
+      req.body.RoleId = 2;
+    }
+    
+    const newUser = await User.create(req.body)
+      .catch(err => res.status(400).send(err.errors));
+    
+    const token = jwt.sign({
+      UserId: user.id,
+      RoleId: user.RoleId
+    }, secret, { expiresIn: '2 days' });
 
-        User.create(req.body)
-          .then((user) => {
-            const token = jwt.sign({
-              UserId: user.id,
-              RoleId: user.RoleId
-            }, secret, { expiresIn: '2 days' });
-
-            user = allUserFields(user);
-            res.status(201).send({ token, expiresIn: '2 days', user });
-          })
-          .catch((err) => {
-            res.status(400).send(err.errors);
-          });
-      });
+    newUser = allUserFields(newUser);
+    return res.status(201).send({ token, expiresIn: '2 days', newUser });
   },
 
   /**
