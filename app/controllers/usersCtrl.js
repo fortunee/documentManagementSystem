@@ -101,8 +101,8 @@ const UsersCtrl = {
       .catch(err => res.status(400).send(err.errors));
     
     const token = jwt.sign({
-      UserId: user.id,
-      RoleId: user.RoleId
+      UserId: newUser.id,
+      RoleId: newUser.RoleId
     }, secret, { expiresIn: '2 days' });
 
     const user = allUserFields(newUser);
