@@ -105,13 +105,13 @@ const UsersCtrl = {
       RoleId: user.RoleId
     }, secret, { expiresIn: '2 days' });
 
-    newUser = allUserFields(newUser);
-    return res.status(201).send({ token, expiresIn: '2 days', newUser });
+    const user = allUserFields(newUser);
+    return res.status(201).send({ token, expiresIn: '2 days', user });
   },
 
   /**
   * Get a specific user
-  * @param {Object} req - Request object
+  * @param {object} req - Request object
   * @param {Object} res - Response object
   * @returns {Object} Response object
   */
