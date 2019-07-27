@@ -112,20 +112,19 @@ const UsersCtrl = {
   /**
   * Get a specific user
   * @param {object} req - Request object
-  * @param {Object} res - Response object
-  * @returns {Object} Response object
+  * @param {object} res - Response object
+  * @returns {object} User
   */
-  getUser(req, res) {
-    User.findOne({ where: { username: req.params.username } })
-     .then((user) => {
-       if (!user) {
-         return res.status(404)
-           .send({ message: `User with username: ${req.params.username} does not exist` });
-       }
+  async getUser(req, res) {
+    const user = await User.findOne({ where: { username: req.params.username } })
+      .catch(err => res.status(400).send(err.errors));
+    if (!user) {
+       return res.status(404)
+         .send({ message: `User with username: ${req.params.username} does not exist` });
+     }
 
-       user = allUserFields(user);
-       res.send(user);
-     });
+     user = allUserFields(user);
+     return res.status(200).send(user);
   },
 
   /**
