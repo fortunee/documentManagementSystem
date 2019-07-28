@@ -129,25 +129,22 @@ const UsersCtrl = {
 
   /**
    * Edit and update a specific user
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
-   * @returns {Object} Response object
+   * @param {object} req - Request object
+   * @param {object} res - Response object
+   * @returns {object} udpated user
    */
-  editUser(req, res) {
-    User.findOne({ where: { username: req.params.username } })
-      .then((user) => {
-        if (!user) {
-          return res.status(404)
-            .send({ message: 'Cannot edit a user that does not exist' });
-        }
+  async editUser(req, res) {
+    const user = await User.findOne({ where: { username: req.params.username } })
+      .catch(err => res.status(400).send(err.errors));
+    
+    if (!user) {
+      return res.status(404)
+        .send({ message: 'Cannot edit a user that does not exist' });
+    }
 
-        user.update(req.body)
-          .then((updatedUser) => {
-            updatedUser = allUserFields(updatedUser);
+    const updatedUser = allUserFields(await user.update(req.body));
 
-            res.send(updatedUser);
-          });
-      });
+    return res.send(updatedUser);
   },
 
   /**
