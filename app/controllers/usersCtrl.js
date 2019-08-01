@@ -149,26 +149,26 @@ const UsersCtrl = {
 
   /**
    * Delete a specific user
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
-   * @returns {Object} Response object
+   * @param {object} req - Request object
+   * @param {object} res - Response object
+   * @returns {object} Response object
    */
-  deleteUser(req, res) {
-    User.findOne({ where: { username: req.params.username } })
-      .then((user) => {
-        if (!user) {
-          return res.status(404)
-            .send({ message: 'Cannot delete a user that does not exist' });
-        }
+  async deleteUser(req, res) {
+    const user = await User.findOne({ where: { username: req.params.username } })
+      .catch(err => res.status(400).send(err.errors));
+    
+    if (!user) {
+      return res.status(404)
+        .send({ message: 'Cannot delete a user that does not exist' });
+    }
 
-        if (user.id !== req.decoded.UserId) {
-          return res.status(403)
-            .send({ message: 'Oops! you cant delete someone else' });
-        }
+    if (user.id !== req.decoded.UserId) {
+      return res.status(403)
+        .send({ message: 'Oops! you cant delete someone else' });
+    }
 
-        user.destroy()
-          .then(() => res.send({ message: 'User deleted.' }));
-      });
+    await user.destroy()
+      .then(() => res.send({ message: 'User deleted.' }));
   }
 };
 
