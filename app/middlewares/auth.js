@@ -11,10 +11,10 @@ const Authentication = {
   /**
    * verifyToken - Verifies if a token supplied or not is valid
    *
-   * @param  {Object} req  Request Object
-   * @param  {Object} res  Response Object
-   * @param  {Object} next
-   * @returns {Object} Response status
+   * @param  {object} req  Request Object
+   * @param  {object} res  Response Object
+   * @param  {object} next
+   * @returns {object} response status
    */
   verifyToken(req, res, next) {
     const token = req.headers.authorization || req.headers['x-access-token'];
@@ -34,20 +34,19 @@ const Authentication = {
   /**
    * verifyAdmin - Verifies that the user role is supplied is an admin
    *
-   * @param  {Object} req  Request Object
-   * @param  {Object} res  Response Object
-   * @param  {Object} next
-   * @returns {Object} Response Object
+   * @param  {object} req  Request Object
+   * @param  {object} res  Response Object
+   * @param  {object} next
+   * @returns {object} Response Object
    */
-  verifyAdmin(req, res, next) {
-    db.Role.findById(req.decoded.RoleId)
-      .then((role) => {
-        if (role.title === 'admin') {
-          next();
-        } else {
-          return res.status(403).send({ message: 'Access forbidden, you are not an admin!' });
-        }
-      });
+  async verifyAdmin(req, res, next) {
+    const role = await db.Role.findById(req.decoded.RoleId);
+
+    if (role.title === 'admin') {
+      next();
+    } else {
+      return res.status(403).send({ message: 'Access forbidden, you are not an admin!' });
+    }
   }
 };
 
