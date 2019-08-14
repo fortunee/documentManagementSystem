@@ -30,7 +30,7 @@ const Helpers = {
     }
     const documents = await db.Document.findAll(queryOptions);
     
-    res.send(documents);
+    return res.send(documents);
   },
 
   /**
@@ -69,7 +69,7 @@ const Helpers = {
         return true;
       })
 
-    res.status(200).send(documents);
+    reuturn res.status(200).send(documents);
   }
 };
 
