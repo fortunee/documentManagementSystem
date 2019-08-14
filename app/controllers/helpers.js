@@ -69,7 +69,7 @@ const Helpers = {
         return true;
       })
 
-    reuturn res.status(200).send(documents);
+    return res.status(200).send(documents);
   }
 };
 
