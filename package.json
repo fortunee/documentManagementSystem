@@ -52,7 +52,7 @@
     "jsonwebtoken": "^7.2.1",
     "mocha": "^3.2.0",
     "mocha-lcov-reporter": "^1.2.0",
-    "morgan": "^1.7.0",
+    "morgan": "^1.9.1",
     "pg": "^6.1.0",
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.27.0",
