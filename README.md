@@ -14,7 +14,7 @@ Below are some of its features:
 It uses JWT for authentication.  
 It generates a token and returns it to the client.  
 It verifies the token on every request.  
-It ensures a user is authenticated to access some routes.
+It ensures a user is authenticated to access protected routes.
 
 #### Users
 It allows users to be created.  
