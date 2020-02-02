@@ -44,7 +44,7 @@ It allows authenticated users to add types to any document they create.
 It allows only authenticated users to create, delete and update types.   
 
 
-## Installation
+## Local development setup
 * Clone the project repository
 * Run `git clone https://github.com/andela-efortune/documentManagementSystem.git`
 * Change directory into the `documentManagementSystem` directory.
