@@ -82,6 +82,7 @@ Set the user's token in the authorization headers.
 Make a PUT or DELETE request to `/api/users/:username`   
 Pass `username` of the user in the url parameters.    
 Set the user's token in the authorization headers.
+
 Send a valid updated data on a PUT request.
 
 ### Roles Endpoint
